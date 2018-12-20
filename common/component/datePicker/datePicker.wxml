@@ -1,0 +1,16 @@
+<!--common/component/datePicker/datePicker.wxml-->
+<view>
+
+ 
+        <view class='date-select-picker'>
+                <view data-type='pre' catchtap='_toggleMonth'  class='date-select-picker-arrow iconfont icon-arrow-left-tran'></view> 
+                      <picker class="date-select-picker-content"  fields="{{mode}}" mode="date" value="{{selectDate}}" start="{{minDate}}"   end="{{maxDate}}" bindchange="_onChangeMonth">
+          <view class='date-select-picker-title'>{{selectDate}}</view>
+    </picker>
+    
+                  <view  data-type='next' catchtap='_toggleMonth'  class='date-select-picker-arrow  iconfont icon-arrow-right-tran {{selectDate >= maxDate ? "date-picker-arrow-opacity" : "" }}'></view>
+        </view>
+      
+  
+
+    </view  >

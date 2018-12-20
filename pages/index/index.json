@@ -1,0 +1,23 @@
+{
+  "usingComponents": {
+    "wux-row": "../../lib/wux/row/index",
+    "wux-col": "../../lib/wux/col/index",
+    "wux-image": "../../lib/wux/image/index",
+    "wux-cell-group": "../../lib/wux/cell-group/index",
+    "wux-cell": "../../lib/wux/cell/index",
+    "wux-button": "../../lib/wux/button/index",
+    "wux-popup": "../../lib/wux/popup/index",
+    "wux-toptips": "../../lib/wux/toptips/index",
+    "wux-toast": "../../lib/wux/toast/index",
+    "wux-icon": "../../lib/wux/icon/index",
+    "wux-spin": "../../lib/wux/spin/index",
+    "wux-dialog": "../../lib/wux/dialog/index",
+    "i-load-more": "../../lib/load-more/index",
+    "wux-refresher": "../../lib/wux/refresher/index",
+    "wux-floating-button": "../../lib/wux/floating-button/index",
+    "wux-card": "../../lib/wux/card/index",
+    "wux-textarea": "../../lib/wux/textarea/index",
+    "wux-select": "../../lib/wux/select/index",
+    "wux-switch": "../../lib/wux/switch/index"
+  }
+}

@@ -1,0 +1,29 @@
+
+
+.card-info-header-title{
+  color:  #4A4A4A;
+  font-size: 36rpx;
+  font-weight: bold;
+  display: block
+}
+.card-info-header-desc{
+  font-size: 24rpx;
+  color: #666666;
+  margin-top: 20rpx; 
+}
+
+.card-info-label-text{
+   color:  #fff;
+  font-size: 24rpx;
+  text-align: center;
+  display: block;
+  margin-top: 30rpx;
+}
+
+.card-info-body{
+  padding-top: 85rpx;
+  padding-bottom: 85rpx;
+  display: block;
+} 
+
+

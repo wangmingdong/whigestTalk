@@ -1,0 +1,60 @@
+var DateFr = {
+
+  getDate: function (time, splitStr) {
+    if (!time) return '';
+    var date = getDate(time);
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate();
+    if (M < 10) M = "0" + M;
+    if (d < 10) d = "0" + d;
+    if (splitStr)
+      return y + splitStr + M + splitStr + d;
+    else
+      return {
+        y: y,
+        M: M,
+        d: d
+      };
+  },
+
+
+  getTime: function (time, splitStr) {
+    var date = DateFr.getDateTime(time);
+    return date.h + splitStr + date.m + splitStr + date.s;
+  },
+
+  get24Time: function (time, splitStr){
+    if(!time) return '';
+    var date = DateFr.getDateTime(time);
+    return date.h + splitStr + date.m;
+  },
+
+  getDateTime: function (time) {
+    var date = getDate(time);
+    var M = date.getMonth() + 1;
+    var y = date.getFullYear();
+    var d = date.getDate();
+    var h = date.getHours() < 10 ? 0 + "" + date.getHours() : date.getHours();
+    var m = date.getMinutes() < 10 ? 0 + "" + date.getMinutes() : date.getMinutes();
+    var s = date.getSeconds() < 10 ? 0 + "" + date.getSeconds() : date.getSeconds();
+    return {
+      y: y,
+      M: M,
+      d: d,
+      h: h,
+      m: m,
+      s: s
+    };
+  },
+
+  getFullDate: function (time, split) {
+    let date = DateFr.getDate(time, split);
+    let tm = DateFr.getDateTime(time);
+    return date + " " + tm.h + ":" + tm.m;
+  }
+}
+
+
+
+module.exports = DateFr;

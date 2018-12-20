@@ -1,0 +1,17 @@
+
+  <view  animation="{{animationData}}"  hidden="{{!isShow}}"  class='modal' catchtouchmove='true'>
+
+     <view  data-type="mask"  catchtap='hideModal' class='modal-mask' ></view>
+  
+      <view  class='modal-layer  modal-layer-radius modal-layer-full' >
+          <!-- 内容区域 -->
+          <view class='modal-body'>         
+               <slot name="body"></slot>                          
+          </view>
+
+          <view class='modal-footer'>
+               <slot name="footer"></slot>                     
+          </view>
+      </view>
+  </view>
+

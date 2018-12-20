@@ -1,0 +1,5 @@
+ <button disabled='{{isCountDownSubmit}}' 
+         bindtap='onCountDownGetUserPhoneSmsCode'
+         class='base-btn btn-primary btn-primary-dark btn-sm'>
+         {{countDownSec > 0 ? ('重新获取'+countDownSec+'秒') : '发送验证码'}}
+</button>

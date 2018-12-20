@@ -1,0 +1,2 @@
+<!--common/component/clock/clock.wxml-->
+ <text class="">{{timeStr}}</text>

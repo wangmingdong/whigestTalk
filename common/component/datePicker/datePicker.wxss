@@ -1,0 +1,35 @@
+/* common/component/datePicker/datePicker.wxss */
+
+@import "../../style/font.wxss";
+
+
+/* 日期选择公共部分 */
+.date-select-picker{ 
+  display: flex;
+  flex-direction: row;
+  height: 110rpx;
+  align-items: center;
+  justify-content: space-between;
+  color: #00A3F7;
+  background: #ffffff;
+  font-size: 36rpx;
+  box-shadow: 0 6rpx 20rpx 0 rgba(0,0,0,0.30);
+  border-radius: 12rpx;
+}
+
+.date-select-picker-content{
+    flex : 1;    
+}
+.date-select-picker-title{
+  text-align: center;
+}
+
+.date-select-picker-arrow {
+    color: #00A3F7;
+    font-size: 48rpx;
+    margin: 0 30rpx;
+}
+
+.date-picker-arrow-opacity{
+  visibility: hidden;
+}

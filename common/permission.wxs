@@ -1,0 +1,40 @@
+//wxs 与 js 运行在不同线程中 不能相互引用
+var getRightList = function (roleNum){
+  //获得本地用户角色
+  switch (roleNum){        
+      //超级管理员
+      case 3 :
+        return [
+          //修改园所
+          "attendance.updateSchool",      
+        ]      
+      //管理员
+      case 2:
+        return [
+                  
+        ]
+        default:
+          return [
+            
+          ];
+    }
+
+}
+
+
+
+    
+// 2是管理员  3超级管理员 其他教职工 
+var hasRight = function(rightName,roleNum){ 
+  if (!rightName) return false;  
+  var rightList = getRightList(roleNum);
+  return rightList.some(function (right) {
+    return right == rightName;
+  })
+
+  return false; 
+}
+
+module.exports ={
+  hasRight: hasRight
+}

@@ -1,0 +1,105 @@
+<!--index.wxml-->
+<view class="container">
+  <!-- 浮动按钮 -->
+  <wux-floating-button wx:if="{{!showEditPopup}}" position="{{ position }}" theme="{{ theme }}" buttons="{{ buttons }}" bind:change="onChange" bind:click="clickFloatBtn" bind:contact="onContact" bind:getuserinfo="onGotUserInfo" />
+
+  <wux-refresher id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh">
+    <scroll-view scroll-y='true' style="height:{{height}}px" enable-back-to-top bindscrolltolower='loadRankMore'>
+
+      <view class="card-container" wx:key="{{index}}" wx:for="{{commentList}}">
+        <view class="card-header">
+          <view class="card-avatar-container">
+            <image class="card-avatar-img" wx:if="{{item.userInfo.avatarUrl && !item.isSecret}}" src="{{item.userInfo.avatarUrl}}"></image>
+            <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.jpeg"></image>
+          </view>
+          <view class="card-header-right">
+            <view class="card-nickName" wx:if="{{item.userInfo.nickName && !item.isSecret}}">{{item.userInfo.nickName}}</view>
+            <view class="card-nickName" wx:else>{{item.mockName}}</view>
+            <view class="card-shot-info">
+              <text class="card-time">{{item.fmtCreateTime}}</text>
+              <text class="card-source" wx:if="{{item.source}}">来自 {{item.source}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="card-body">
+          {{item.content}}
+        </view>
+        <view class="card-fooder">
+          <view class="card-fooder-total discuss">
+            <!-- <wux-icon size="16" type="ios-chatboxes"/> -->
+            <i class="iconfont card-icon icon-interactive"></i>
+            <view class="card-fooder-total-text">
+              {{item.discussCount}}
+            </view>
+          </view>
+          <view class="card-fooder-total good">
+            <button wx:if="{{!userInfo.id}}" class="hidden-info-btn" open-type='getUserInfo' bind:getuserinfo="giveGoodForPermisson" data-comment-id="{{item.id}}"></button>
+            <button wx:else class="hidden-info-btn" data-comment-id="{{item.id}}" bindtap='giveGoodAction'></button>
+            <i class="iconfont card-icon icon-praise {{item.usedGood ? 'color-error' : ''}}"></i>
+            <view class="card-fooder-total-text {{item.usedGood ? 'color-error' : ''}}">
+              {{item.goodNum}}
+            </view>
+          </view>
+        </view>
+      </view>
+      <i-load-more custom-class="white-color" tip="{{loadMoreText}}" loading="{{ spinning }}" />
+    </scroll-view>
+  </wux-refresher>
+
+  <!-- 写评论 -->
+  <!-- <wux-popup position="bottom" visible="{{ showEditPopup }}" bind:close="switchEditPopup" closable maskClosable>
+  <view></view>
+    <wux-cell-group title="Your fathers">
+        <wux-cell hover-class="none">
+          <wux-textarea hasCount rows="5" maxlength="80" cursorSpacing="80" placeholder="Count..." />
+        </wux-cell>
+        <wux-cell hover-class="none">
+            <wux-button block type="balanced" bindtap="switchEditPopup">Yes</wux-button>
+        </wux-cell>
+    </wux-cell-group>
+  </wux-popup> -->
+
+
+  <view class="page page-modal" wx:if="{{showEditPopup}}">
+    <view class="page-modal-header">
+      <view class="page-modal-container">
+        <!-- <button class="page-modal-btn btn-cancel" bindtap='switchEditPopup'>取消</button> -->
+        <wux-button size="small" outline block type="stable" bind:click="switchEditPopup">取消</wux-button>
+      </view>
+      <view class="page-modal-container">
+        <wux-button size="small" block disabled="{{publishLoading}}" loading="{{publishLoading}}" type="balanced" open-type="getUserInfo"  bind:getuserinfo="publishComment">发布</wux-button>
+        <!-- <button class="page-modal-btn btn-ok" bindtap="addNewComment">发布</button> -->
+      </view>
+      <!-- <view class="page-modal-btn btn-cancel">
+      </view>
+      <view class="page-modal-btn btn-ok"></view> -->
+    </view>
+    <wux-cell-group>
+      <wux-cell hover-class="none">
+        <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" placeholder="发表你的看法" />
+      </wux-cell>
+      <!-- <wux-cell hover-class="none">
+          <wux-button block type="balanced" bindtap="switchEditPopup">Yes</wux-button>
+      </wux-cell> -->
+    </wux-cell-group>
+    <view class="page-modal-footer">
+      <!-- 手机来源 -->
+      <view class="modal-source" wx:if="{{systemInfo.model}}">
+        <view class="label-before-icon">
+          <i class="iconfont icon-mobilephone label-icon-before"></i>
+        </view>
+        <view class="label-title">来自：{{systemInfo.model}} </view>
+        <view class="label-close" bindtap='clearSystemInfo'>
+          <i class="iconfont icon-close label-close-icon"></i>
+        </view>
+      </view>
+      <view wx:else></view>
+
+      <!-- 开启/关闭匿名 -->
+      <view class="secret-control">
+        <view class="secret-title">匿名：</view>
+        <wux-switch name="balanced" slot="footer" color="balanced" value="{{ isSecret }}" bind:change="switchSecret" />
+      </view>
+    </view>
+  </view>
+</view>

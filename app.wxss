@@ -1,5 +1,6 @@
 /**app.wxss**/
 @import './font/icon-font.wxss'; 
+@import './common/style/animate.wxss'; 
 
 .iconfont {
   font-family:"iconfont" !important;
@@ -22,6 +23,14 @@ page{
   box-sizing: border-box;
   font-size:34rpx;
 } 
+
+/* 覆盖animate.css动画时间 */
+.animated {
+  -webkit-animation-duration: .3s ;
+  animation-duration: .3s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
 
 /* card */
 .card-container{

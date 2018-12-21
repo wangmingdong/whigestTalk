@@ -60,45 +60,42 @@
   </wux-popup> -->
 
 
-  <view class="page page-modal" wx:if="{{showEditPopup}}">
-    <view class="page-modal-header">
-      <view class="page-modal-container">
-        <!-- <button class="page-modal-btn btn-cancel" bindtap='switchEditPopup'>取消</button> -->
-        <wux-button size="small" outline block type="stable" bind:click="switchEditPopup">取消</wux-button>
-      </view>
-      <view class="page-modal-container">
-        <wux-button size="small" block disabled="{{publishLoading}}" loading="{{publishLoading}}" type="balanced" open-type="getUserInfo"  bind:getuserinfo="publishComment">发布</wux-button>
-        <!-- <button class="page-modal-btn btn-ok" bindtap="addNewComment">发布</button> -->
-      </view>
-      <!-- <view class="page-modal-btn btn-cancel">
-      </view>
-      <view class="page-modal-btn btn-ok"></view> -->
-    </view>
-    <wux-cell-group>
-      <wux-cell hover-class="none">
-        <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" placeholder="发表你的看法" />
-      </wux-cell>
-      <!-- <wux-cell hover-class="none">
-          <wux-button block type="balanced" bindtap="switchEditPopup">Yes</wux-button>
-      </wux-cell> -->
-    </wux-cell-group>
-    <view class="page-modal-footer">
-      <!-- 手机来源 -->
-      <view class="modal-source" wx:if="{{systemInfo.model}}">
-        <view class="label-before-icon">
-          <i class="iconfont icon-mobilephone label-icon-before"></i>
+  <view class-names="animated faster {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+    <view class="page page-modal animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+      <view class="page-modal-header">
+        <view class="page-modal-container">
+          <wux-button size="small" outline block type="stable" bind:click="switchEditPopup">取消</wux-button>
         </view>
-        <view class="label-title">来自：{{systemInfo.model}} </view>
-        <view class="label-close" bindtap='clearSystemInfo'>
-          <i class="iconfont icon-close label-close-icon"></i>
+        <view class="page-modal-container">
+          <wux-button size="small" block disabled="{{publishLoading}}" loading="{{publishLoading}}" type="balanced" open-type="getUserInfo"  bind:getuserinfo="publishComment">发布</wux-button>
         </view>
       </view>
-      <view wx:else></view>
+      <view class=" animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+      <wux-cell-group>
+        <wux-cell hover-class="none">
+          <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" placeholder="发表你的看法" />
+        </wux-cell>
+      </wux-cell-group>
+      </view>
+      
+      <view class="page-modal-footer">
+        <!-- 手机来源 -->
+        <view class="modal-source" wx:if="{{systemInfo.model}}">
+          <view class="label-before-icon">
+            <i class="iconfont icon-mobilephone label-icon-before"></i>
+          </view>
+          <view class="label-title">来自：{{systemInfo.model}} </view>
+          <view class="label-close" bindtap='clearSystemInfo'>
+            <i class="iconfont icon-close label-close-icon"></i>
+          </view>
+        </view>
+        <view wx:else></view>
 
-      <!-- 开启/关闭匿名 -->
-      <view class="secret-control">
-        <view class="secret-title">匿名：</view>
-        <wux-switch name="balanced" slot="footer" color="balanced" value="{{ isSecret }}" bind:change="switchSecret" />
+        <!-- 开启/关闭匿名 -->
+        <view class="secret-control">
+          <view class="secret-title">匿名：</view>
+          <wux-switch name="balanced" slot="footer" color="balanced" value="{{ isSecret }}" bind:change="switchSecret" />
+        </view>
       </view>
     </view>
   </view>

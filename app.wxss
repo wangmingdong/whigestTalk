@@ -314,3 +314,7 @@ page{
 .color-error {
   color: #d40606;
 }
+
+.modal-textarea{
+  margin: 30rpx;
+}

@@ -288,7 +288,8 @@ Page({
       if (res) {
         this.onRefresh()
         this.setData({
-          publishLoading: false
+          publishLoading: false,
+          commentContent: ''
         })
       }
       this.switchEditPopup()
@@ -371,6 +372,9 @@ Page({
       // 如果用户存在，执行回调
       if (res.id) {
         if (fn) {
+          this.setData({
+            publishLoading: false
+          })
           fn(true)
         }
       } else {
@@ -382,10 +386,14 @@ Page({
           app.globalData.userInfo = result.data
           this.setData({
             userInfo: result.data,
-            hasUserInfo: result.data
+            hasUserInfo: result.data,
+            publishLoading: false
           })
           StorageUtil.setStorageSync("userInfo", result.data);
           if (fn) {
+            this.setData({
+              publishLoading: false
+            })
             fn(true)
           }
         })

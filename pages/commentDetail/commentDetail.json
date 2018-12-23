@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "查看启动日志",
+  "navigationBarTitleText": "智麦说",
 
   "usingComponents": {
     "wux-row": "../../lib/wux/row/index",

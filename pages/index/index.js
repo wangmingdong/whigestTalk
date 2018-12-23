@@ -4,6 +4,7 @@ import Auth from "./../../api/auth";
 import CommentSev from "./../../api/comment";
 import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
+import NavigationUtil from "./../../utils/navigationUtil.js";
 import { $stopWuxRefresher } from '../../lib/wux/index'
 
 //获取应用实例
@@ -11,7 +12,6 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
     userInfo: {},
     hasUserInfo: false,
     pageSize: 10,
@@ -38,12 +38,17 @@ Page({
     isSecret: false, // 开启匿名
     publishLoading: false   // 发布状态
   },
+
   //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
+  showCommentDetail: function(e) {
+    let commentInfo = e.target.dataset.commentInfo
+    StorageUtil.setStorageSync("commentInfo", commentInfo);
+    NavigationUtil.navigateTo('../commentDetail/commentDetail')
+    // wx.navigateTo({
+    //   url: '../logs/logs'
+    // })
   },
+
   // onshow
   onShow: function () {
     wx.getSystemInfo({

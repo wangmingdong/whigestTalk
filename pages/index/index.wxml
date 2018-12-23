@@ -21,11 +21,11 @@
             </view>
           </view>
         </view>
-        <view class="card-body">
+        <view class="card-body" data-comment-info="{{item}}" bindtap='showCommentDetail'>
           {{item.content}}
         </view>
         <view class="card-fooder">
-          <view class="card-fooder-total discuss">
+          <view class="card-fooder-total discuss" data-comment-info="{{item}}" bindtap='showCommentDetail'>
             <!-- <wux-icon size="16" type="ios-chatboxes"/> -->
             <i class="iconfont card-icon icon-interactive"></i>
             <view class="card-fooder-total-text">

@@ -1,44 +1,41 @@
 <!--commentDetail.wxml-->
 <view class="container">
   <wux-refresher id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh">
-    <scroll-view scroll-y='true' enable-back-to-top bindscrolltolower='loadRankMore'>
-
-      <view class="card-container">
-        <view class="card-header">
-          <view class="card-avatar-container">
-            <image class="card-avatar-img" wx:if="{{commentInfo.userInfo.avatarUrl && !commentInfo.isSecret}}" src="{{commentInfo.userInfo.avatarUrl}}"></image>
-            <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.jpeg"></image>
-          </view>
-          <view class="card-header-right">
-            <view class="card-nickName" wx:if="{{commentInfo.userInfo.nickName && !commentInfo.isSecret}}">{{commentInfo.userInfo.nickName}}</view>
-            <view class="card-nickName" wx:else>{{commentInfo.mockName}}</view>
-            <view class="card-shot-info">
-              <text class="card-time">{{commentInfo.fmtCreateTime}}</text>
-              <text class="card-source" wx:if="{{commentInfo.source}}">来自 {{commentInfo.source}}</text>
-            </view>
-          </view>
+    <view class="card-container">
+      <view class="card-header">
+        <view class="card-avatar-container">
+          <image class="card-avatar-img" wx:if="{{commentInfo.userInfo.avatarUrl && !commentInfo.isSecret}}" src="{{commentInfo.userInfo.avatarUrl}}"></image>
+          <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.jpeg"></image>
         </view>
-        <view class="card-body" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
-          {{commentInfo.content}}
-        </view>
-        <view class="card-fooder">
-          <view class="card-fooder-total discuss" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
-            <!-- <wux-icon size="16" type="ios-chatboxes"/> -->
-            <i class="iconfont card-icon icon-interactive"></i>
-            <view class="card-fooder-total-text">
-              {{commentInfo.discussCount}}
-            </view>
-          </view>
-          <view class="card-fooder-total good">
-            <button wx:if="{{!userInfo.id}}" class="hidden-info-btn" open-type='getUserInfo' bind:getuserinfo="giveGoodForPermisson" data-comment-id="{{commentInfo.id}}"></button>
-            <button wx:else class="hidden-info-btn" data-comment-id="{{commentInfo.id}}" bindtap='giveGoodAction'></button>
-            <i class="iconfont card-icon icon-praise {{commentInfo.usedGood ? 'color-error' : ''}}"></i>
-            <view class="card-fooder-total-text {{commentInfo.usedGood ? 'color-error' : ''}}">
-              {{commentInfo.goodNum}}
-            </view>
+        <view class="card-header-right">
+          <view class="card-nickName" wx:if="{{commentInfo.userInfo.nickName && !commentInfo.isSecret}}">{{commentInfo.userInfo.nickName}}</view>
+          <view class="card-nickName" wx:else>{{commentInfo.mockName}}</view>
+          <view class="card-shot-info">
+            <text class="card-time">{{commentInfo.fmtCreateTime}}</text>
+            <text class="card-source" wx:if="{{commentInfo.source}}">来自 {{commentInfo.source}}</text>
           </view>
         </view>
       </view>
-    </scroll-view>
+      <view class="card-body" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
+        {{commentInfo.content}}
+      </view>
+      <view class="card-fooder">
+        <view class="card-fooder-total discuss" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
+          <!-- <wux-icon size="16" type="ios-chatboxes"/> -->
+          <i class="iconfont card-icon icon-interactive"></i>
+          <view class="card-fooder-total-text">
+            {{commentInfo.discussCount}}
+          </view>
+        </view>
+        <view class="card-fooder-total good">
+          <button wx:if="{{!userInfo.id}}" class="hidden-info-btn" open-type='getUserInfo' bind:getuserinfo="giveGoodForPermisson" data-comment-id="{{commentInfo.id}}"></button>
+          <button wx:else class="hidden-info-btn" data-comment-id="{{commentInfo.id}}" bindtap='giveGoodAction'></button>
+          <i class="iconfont card-icon icon-praise {{commentInfo.usedGood ? 'color-error' : ''}}"></i>
+          <view class="card-fooder-total-text {{commentInfo.usedGood ? 'color-error' : ''}}">
+            {{commentInfo.goodNum}}
+          </view>
+        </view>
+      </view>
+    </view>
   </wux-refresher>
 </view>

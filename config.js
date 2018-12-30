@@ -15,7 +15,7 @@ var checkCurrentEnv = function (env) {
 
   switch (env) {
     case 'dev':
-      env = '192.168.31.252';
+      env = '192.168.43.157';
       break;
     case 'pre':
       env = 'weqianduan.com';

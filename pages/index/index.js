@@ -41,7 +41,7 @@ Page({
 
   //事件处理函数
   showCommentDetail: function(e) {
-    let commentInfo = e.target.dataset.commentInfo
+    let commentInfo = e.currentTarget.dataset.commentInfo
     StorageUtil.setStorageSync("commentInfo", commentInfo);
     NavigationUtil.navigateTo('../commentDetail/commentDetail')
     // wx.navigateTo({

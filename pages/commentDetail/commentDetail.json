@@ -18,6 +18,8 @@
     "wux-refresher": "../../lib/wux/refresher/index",
     "wux-floating-button": "../../lib/wux/floating-button/index",
     "wux-card": "../../lib/wux/card/index",
-    "wux-textarea": "../../lib/wux/textarea/index"
+    "wux-textarea": "../../lib/wux/textarea/index",
+    "wux-tabs": "../../lib/wux/tabs/index",
+    "wux-tab": "../../lib/wux/tab/index"
   }
 }

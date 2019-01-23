@@ -15,7 +15,7 @@
   text-align: center;
   position: relative;
   box-sizing: border-box;
-  font-size: 28rpx;
+  font-size: 34rpx;
   color: #80848f;
 }
 .wux-tabs__tab-bar {
@@ -30,6 +30,8 @@
 }
 .wux-tabs__tab--current {
   color: #33cd5f;
+  font-weight:bold;
+  transition:all .3s;
 }
 .wux-tabs__tab--scroll {
   display: inline-block;

@@ -25,4 +25,11 @@ export default class CommentSev {
     return Net.postJSON(Config.SERVER.url.root + "/comments/giveGood", {}, data);
   }
 
+  /**
+   * 根据commentId查询详情
+   */
+  static findCommentByCommentId(id) {
+    return Net.getJSON(Config.SERVER.url.root + "/comments/findCommentByCommentId", { commentId: id });
+  }
+
 }

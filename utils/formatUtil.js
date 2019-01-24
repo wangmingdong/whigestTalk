@@ -75,6 +75,9 @@ const Format = {
     
     getDateTime : function(time){
 
+        if (typeof time == 'string') {
+          time = parseInt(time)
+        }
         var date = new Date(time);
         var M = date.getMonth()+1;
         var y = date.getFullYear();
@@ -95,6 +98,9 @@ const Format = {
 
 
     getFullDate : function(time,split){
+      if (typeof time == 'string') {
+        time = parseInt(time)
+      }
         let date = Format.getDate(time,split);
         let tm = Format.getDateTime(time);
         return date + " " + `${tm.h}:${tm.m}`;

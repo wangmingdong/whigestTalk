@@ -318,3 +318,8 @@ page{
 .modal-textarea{
   margin: 30rpx;
 }
+
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}

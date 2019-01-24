@@ -19,9 +19,8 @@
       <view class="card-body" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
         {{commentInfo.content}}
       </view>
-      <view class="card-fooder">
+      <!-- <view class="card-fooder">
         <view class="card-fooder-total discuss" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
-          <!-- <wux-icon size="16" type="ios-chatboxes"/> -->
           <i class="iconfont card-icon icon-interactive"></i>
           <view class="card-fooder-total-text">
             {{commentInfo.discussCount}}
@@ -35,7 +34,7 @@
             {{commentInfo.goodNum}}
           </view>
         </view>
-      </view>
+      </view> -->
     </view>
     <view class="chat-container">
       <view class="chat-header">
@@ -51,16 +50,16 @@
           <!-- <wux-tab key="{{tabItem[0].key}}" title="评论 {{tabItem[0].value}}"></wux-tab>
           <wux-tab key="{{tabItem[1].key}}" title="点赞 {{tabItem[1].value}}"></wux-tab> -->
           <wux-tab key="{{tabItem[0].key}}">
-            评论 {{tabItem[0].value}}
+            评论 {{discussTotal}}
           </wux-tab>
           <wux-tab key="{{tabItem[1].key}}">
-            点赞 {{tabItem[1].value}}
+            点赞 {{commentInfo.goodNum}}
           </wux-tab>
         </wux-tabs>
       </view>
       <view class="chat-body">
-        <view wx:if="{{currentTab == 0}}" class="">
-          <view wx:if="{{!discussList.length}}">
+        <view wx:if="{{currentTab == 0}}" class="chat-body-container">
+          <view wx:if="{{!discussList.length}}" class="chat-body-empty">
             暂无评论
           </view>
           <view wx:if="{{discussList.length}}">
@@ -87,16 +86,98 @@
                 </view>
                 <!-- 底部信息 -->
                 <view class="discuss-base-info">
-                  {{item.createTime}}
+                  <view class="discuss-base-footer-info left">
+                    {{item.fmtCreateTime}}
+                  </view>
+                  <!-- <view class="discuss-base-footer-info right">
+                    <i class="iconfont card-icon icon-interactive"></i>
+                    <view class="card-fooder-total-text {{commentInfo.usedGood ? 'color-error' : ''}}">
+                  </view> -->
                 </view>
               </view>
             </view>
           </view>
         </view>
-        <view wx:if="{{currentTab == 1}}" class="">
-          暂无点赞
+        <view wx:if="{{currentTab == 1}}" class="chat-body-container">
+          <view class="chat-body-empty" wx:if="{{!commentInfo.giveGoodUsers.length}}">
+            暂无点赞
+          </view>
+          
+          <view wx:else="{{commentInfo.giveGoodUsers.length}}">
+            <view class="discuss-container" wx:key="{{index}}" wx:for="{{commentInfo.giveGoodUsers}}">
+              <view class="discuss-avatar-container">
+                <view class="discuss-avatar-main">
+                  <image class="discuss-avatar-img" src="{{item.avatarUrl}}"></image>
+                </view>
+              </view>
+              <view class="discuss-content-container flex-align-center">
+                <!-- 名字 -->
+                <view class="discuss-author-info">
+                  <view class="card-nickName">{{item.nickName}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
         </view>
       </view>
     </view>
   </wux-refresher>
+
+  <!-- 底部功能按钮 -->
+  <view class="footer-btn-group">
+    <view class="footer-btn-item" data-popup-type="1" bindtap='switchEditPopup'>
+      <i class="iconfont card-icon icon-interactive"></i>
+      评论
+    </view>
+    <view class="footer-btn-item">
+      <!-- <i class="iconfont card-icon icon-praise"></i> -->
+      <!-- 点赞 -->
+      <button wx:if="{{!userInfo.id}}" class="hidden-info-btn" open-type='getUserInfo' bind:getuserinfo="giveGoodForPermisson" data-comment-id="{{commentInfo.id}}"></button>
+      <button wx:else class="hidden-info-btn" data-comment-id="{{commentInfo.id}}" bindtap='giveGoodAction'></button>
+      <i class="iconfont card-icon icon-praise {{commentInfo.usedGood ? 'color-error' : ''}}"></i>
+      <view class="card-fooder-total-text {{commentInfo.usedGood ? 'color-error' : ''}}">
+        点赞
+      </view>
+    </view>
+  </view>
+
+  <view class-names="animated faster {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+    <view class="page page-modal animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+      <view class="page-modal-header">
+        <view class="page-modal-container">
+          <wux-button size="small" outline block data-popup-type="0" type="stable" bind:click="switchEditPopup">取消</wux-button>
+        </view>
+        <view class="page-modal-container">
+          <wux-button size="small" block disabled="{{publishLoading}}" loading="{{publishLoading}}" type="balanced" open-type="getUserInfo"  bind:getuserinfo="publishComment">发布</wux-button>
+        </view>
+      </view>
+      <view class=" animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+        <wux-cell-group>
+          <wux-cell hover-class="none">
+            <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" controlled value="{{commentContent}}" placeholder="发表你的看法" />
+          </wux-cell>
+        </wux-cell-group>
+      </view>
+      
+      <view class="page-modal-footer animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+        <!-- 手机来源 -->
+        <view class="modal-source" wx:if="{{systemInfo.model}}">
+          <view class="label-before-icon">
+            <i class="iconfont icon-mobilephone label-icon-before"></i>
+          </view>
+          <view class="label-title">来自：{{systemInfo.model}} </view>
+          <view class="label-close" bindtap='clearSystemInfo'>
+            <i class="iconfont icon-close label-close-icon"></i>
+          </view>
+        </view>
+        <view wx:else></view>
+
+        <!-- 开启/关闭匿名 -->
+        <view class="secret-control">
+          <view class="secret-title">匿名：</view>
+          <wux-switch name="balanced" slot="footer" color="balanced" value="{{ isSecret }}" bind:change="switchSecret" />
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

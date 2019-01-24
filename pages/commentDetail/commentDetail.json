@@ -20,6 +20,7 @@
     "wux-card": "../../lib/wux/card/index",
     "wux-textarea": "../../lib/wux/textarea/index",
     "wux-tabs": "../../lib/wux/tabs/index",
-    "wux-tab": "../../lib/wux/tab/index"
+    "wux-tab": "../../lib/wux/tab/index",
+    "wux-switch": "../../lib/wux/switch/index"
   }
 }

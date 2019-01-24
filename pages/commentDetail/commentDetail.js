@@ -8,8 +8,13 @@ import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
 import { $stopWuxRefresher } from '../../lib/wux/index'
 
+//获取应用实例
+const app = getApp()
+
 Page({
   data: {
+    userInfo: {},
+    hasUserInfo: false,
     commentInfo: {},
     tabItem: [{
       key: 0,
@@ -26,25 +31,78 @@ Page({
     height: 0,
     rankPageNum: [],
     discussList: [],
+    discussTotal: 0,
+    showEditPopup: 0,  // 显示新增评论弹窗
     isNoMore: false  // 不在加载了
   },
   onShow: function () {
+    wx.getSystemInfo({
+      success: (res) => {
+        this.setData({
+          height: res.windowHeight
+        })
+      }
+    })
   },
 
   onLoad: function (options) {
     let commentInfo = StorageUtil.getStorageSync('commentInfo')
+    let userInfo = StorageUtil.getStorageSync('userInfo')
     let commentId = options.id
     // 如果缓存有值，先取缓存
-    if (commentInfo) {
-      console.log(commentInfo)
+    // if (commentInfo) {
+    //   console.log(commentInfo)
+    //   this.setData({
+    //     commentInfo: commentInfo
+    //   })
+    // }
+    console.log(options)
+    let self = this
+    if (userInfo) {
+      self.setData({
+        userInfo: userInfo,
+        hasUserInfo: userInfo
+      })
+      self.refreshAllData(commentId)
+    } else {
+      Auth.loginSys().then(res => {
+        if (res) {
+          StorageUtil.setStorageSync("sessionKey", res.session_key);
+          StorageUtil.setStorageSync("openid", res.openid);
+          if (userInfo) {
+            userInfo.openid = res.openid
+          } else {
+            userInfo = {
+              openid: res.openid
+            }
+          }
+          app.globalData.userInfo = userInfo
+          self.setData({
+            userInfo: userInfo,
+            hasUserInfo: userInfo
+          })
+          self.refreshAllData(commentId)
+        }
+      })
+    }
+  },
+
+  // 刷新当前页面所有数据
+  refreshAllData: function (commentId) {
+    this.setData({
+      pageNum: 1,
+      pageSize: 10,
+      isNoMore: false,
+      discussList: []
+    })
+    CommentSev.findCommentByCommentId(commentId).then(res => {
+      console.log(res)
+      let commentInfo = res.data
+      commentInfo.fmtCreateTime = FormatUtil.getFullDate(commentInfo.createTime, '.')
       this.setData({
         commentInfo: commentInfo
       })
-    }
-    console.log(options)
-    CommentSev.findCommentByCommentId(commentId).then(res => {
-      console.log(res)
-      this.onRefresh()
+      this.getDiscussList()
     })
   },
 
@@ -57,12 +115,14 @@ Page({
   },
 
   // 格式化数据
-  formatDiscussList: function (discussList) {
+  formatCreateTimeList: function (discussList) {
     discussList.forEach((v, i) => {
       // 处理时间
       if (v.createTime) {
         // v.fmtCreateTime = FormatUtil.isToday(v.createTime)
         v.fmtCreateTime = FormatUtil.getFullDate(v.createTime, '.')
+        // let fmtObj = FormatUtil.getDateTime(v.createTime)
+        // v.fmtCreateTime = `${fmtObj.y}-${fmtObj.M}-${fmtObj.d} ${fmtObj.h}:${fmtObj.m}:${fmtObj.s}`
       }
     })
     return discussList;
@@ -77,6 +137,22 @@ Page({
       })
       this.getDiscussList()
     }
+  },
+
+  //  更新缓存中说说状态
+  updateCommentData: function () {
+    let commentList = StorageUtil.getStorageSync('commentList')
+    let newCommentList = []
+    if (commentList.length) {
+      newCommentList = commentList.map((v, i) => {
+        if (v.id == this.data.commentInfo.id) {
+          return  v = this.data.commentInfo
+        } else {
+          return v
+        }
+      })
+    }
+    StorageUtil.setStorageSync('commentList', newCommentList)
   },
 
   // 查询评论列表
@@ -98,7 +174,7 @@ Page({
         if (res.data.rows.length) {
           let resultData = res.data.rows
           // 处理数据
-          resultData = this.formatDiscussList(resultData)
+          resultData = this.formatCreateTimeList(resultData)
           let loadMoreText = '加载更多'
           // 如果返回的个数小于pageSize
           if (resultData.length < this.data.pageSize) {
@@ -109,6 +185,7 @@ Page({
           }
           this.setData({
             discussList: this.data.discussList.concat(resultData),
+            discussTotal: res.data.total,
             spinning: false,
             loadMoreText: loadMoreText
           })
@@ -132,14 +209,174 @@ Page({
   onPulling() {
     console.log('onPulling')
   },
+
   onRefresh() {
     console.log('onRefresh')
-    this.setData({
-      pageNum: 1,
-      pageSize: 10,
-      isNoMore: false,
-      discussList: []
+
+    this.refreshAllData(this.data.commentInfo.id)
+  },
+
+  // 打开或关闭新增评论弹窗
+  switchEditPopup: function (e) {
+    console.log(e)
+    let status = parseInt(e.target.dataset.popupType)
+    let self = this
+    self.setData({
+      showEditPopup: status
     })
-    this.getDiscussList()
-  }
+    // self.setData({
+    //   showEditPopup: !e || e.target
+    // })
+
+    // 打开新增
+    if (self.data.showEditPopup) {
+      wx.getSystemInfo({
+        success: function (res) {
+          console.log(res)
+          if (res) {
+            self.setData({
+              systemInfo: res
+            })
+          }
+        },
+        fail: function (err) {
+
+        },
+        complete: function (complete) { },
+      })
+    }
+  },
+
+  // 清除手机信息
+  clearSystemInfo: function () {
+    this.setData({
+      systemInfo: {}
+    })
+  },
+
+  // 开启/关闭匿名
+  switchSecret: function (e) {
+    console.log(e)
+    this.setData({
+      isSecret: e.detail.value
+    })
+  },
+  // 点赞请求
+  giveGoodAction: function (e) {
+    let param = {
+      openid: this.data.userInfo.openid,
+      commentId: e.target.dataset.commentId
+    }
+    console.log(param)
+    CommentSev.giveGood(param).then(res => {
+      console.log(res)
+      this.data.commentInfo.usedGood = res;
+      let currentCommentInfo = this.data.commentInfo
+      
+      if (res && Object.keys(res).indexOf('data') > -1) {
+        // 如果没赞则+1
+        if (res.data) {
+          currentCommentInfo.goodNum++
+          currentCommentInfo.usedGood = true
+        } else {
+          // 如果已经赞了则-1
+          currentCommentInfo.goodNum--
+          currentCommentInfo.usedGood = false
+        }
+        this.setData({
+          commentInfo: currentCommentInfo
+        })
+      }
+      this.updateCommentData()
+    })
+  },
+
+  // 点赞授权
+  giveGoodForPermisson: function (e) {
+    this.getUserInfo(e, res => {
+      // 授权成功执行后续操作
+      if (res) {
+        this.giveGoodAction(e)
+      }
+    })
+  },
+
+  // 获取用户授权
+  getUserInfo: function (e, fn) {
+    console.log(e)
+    let userInfo = {
+      nickName: ''
+    };
+    let hasUserInfo = false;
+    if (e.detail.errMsg.indexOf('getUserInfo:fail') > -1) {
+      userInfo = e.detail.userInfo
+      hasUserInfo = true;
+
+      if (fn) {
+        fn(false)
+      }
+      return
+    }
+    this.setData({
+      publishLoading: true
+    })
+    // 先查询用户信息是否存在
+    this.queryLogin((res) => {
+      // 如果用户存在，执行回调
+      if (res.id) {
+        if (fn) {
+          this.setData({
+            publishLoading: false
+          })
+          fn(true)
+        }
+      } else {
+        // 如果没有则新增
+        let userData = Object.assign(e.detail, res)
+        console.log(userData)
+        User.addUserData(userData).then(result => {
+          console.log(result)
+          app.globalData.userInfo = result.data
+          this.setData({
+            userInfo: result.data,
+            hasUserInfo: result.data,
+            publishLoading: false
+          })
+          StorageUtil.setStorageSync("userInfo", result.data);
+          if (fn) {
+            this.setData({
+              publishLoading: false
+            })
+            fn(true)
+          }
+        })
+      }
+    })
+  },
+
+  // 登录查询
+  queryLogin: function (fn) {
+    Auth.loginSys().then(res => {
+      if (res) {
+        StorageUtil.setStorageSync("sessionKey", res.session_key);
+        User.findUserByOpenId(res.openid).then(info => {
+          if (info.data) {
+            app.globalData.userInfo = info.data
+            this.setData({
+              userInfo: info.data,
+              hasUserInfo: info.data
+            })
+            StorageUtil.setStorageSync("userInfo", info.data);
+            if (fn) {
+              fn(info.data)
+            }
+          } else {
+            if (fn) {
+              fn(res)
+            }
+          }
+        })
+      }
+    })
+  },
 })

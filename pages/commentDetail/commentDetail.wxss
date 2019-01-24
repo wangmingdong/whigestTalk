@@ -65,16 +65,27 @@
 }
 
 .chat-body{
-  padding:25rpx 30rpx;
+  /* padding:25rpx 30rpx; */
+}
+
+.chat-body-container{
+  padding:0 20rpx;
+}
+
+.chat-body-empty{
+  padding: 20rpx;
+  text-align:center;
 }
 
 /* 评论样式 */
 .discuss-container{
   display: flex;
+  /* padding: 20rpx 0; */
 }
 
 .discuss-avatar-container{
-  padding-right: 30rpx;
+  padding: 15rpx 20rpx;
+  flex: 1;
 }
 
 .discuss-avatar-main{
@@ -90,4 +101,97 @@
 
 .discuss-content-container{
   font-size: 30rpx;
+  flex: 6;
+  padding:0 20rpx;
+  padding-bottom: 0;
+  position: relative;
+}
+
+.discuss-content-container:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 2rpx;
+  border-bottom: 2rpx solid #D9D9D9;
+  color: #D9D9D9;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+}
+
+.discuss-container:last-of-type .discuss-content-container:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 2rpx;
+  border-bottom: 0 solid #D9D9D9;
+  color: #D9D9D9;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+}
+
+.discuss-author-info{
+  padding: 5rpx 0;
+}
+
+.discuss-detail{
+  padding: 5rpx 0;
+}
+
+.discuss-other-chat{
+  padding: 5rpx 0;
+}
+
+.discuss-base-info{
+  padding: 5rpx 0;
+  color:#afaeae;
+  display: flex;
+}
+
+.discuss-base-footer-info{
+  flex: 1
+}
+
+/* 底部按钮组 */
+.footer-btn-group{
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  color: #afaeae;
+}
+
+.footer-btn-group:after{
+  content: " ";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 2rpx;
+  border-bottom: 2rpx solid #D9D9D9;
+  color: #D9D9D9;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
+  -webkit-transform: scaleY(0.5);
+          transform: scaleY(0.5);
+}
+
+.footer-btn-item{
+  flex: 1;
+  justify-content:center;
+  align-items:center;
+  display:flex;
+  padding: 20rpx;
+  position:relative;
+}
+
+.footer-btn-item:first-of-type{
+  border-right: 1rpx solid #D9D9D9;
 }

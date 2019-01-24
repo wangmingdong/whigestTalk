@@ -51,6 +51,7 @@ Page({
 
   // onshow
   onShow: function () {
+    let commentList = StorageUtil.getStorageSync('commentList')
     wx.getSystemInfo({
       success: (res) => {
         this.setData({
@@ -58,6 +59,12 @@ Page({
         })
       }
     })
+    console.log(commentList)
+    if (commentList.length) {
+      this.setData({
+        commentList: commentList
+      })
+    }
   },
 
   // 登录查询
@@ -88,6 +95,7 @@ Page({
 
   onLoad: function () {
     // this.queryLogin()
+    StorageUtil.setStorageSync("commentList", []);
     let userInfo = StorageUtil.getStorageSync('userInfo')
     let self = this
     Auth.loginSys().then(res => {
@@ -183,6 +191,7 @@ Page({
           isNoMore: true
         })
       }
+      StorageUtil.setStorageSync("commentList", this.data.commentList);
     })
   },
 

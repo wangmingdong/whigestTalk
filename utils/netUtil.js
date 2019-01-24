@@ -22,6 +22,8 @@ export default class NetUtil {
     //获取本地token携带请求
     let token = wx.getStorageSync("wx_session_key");
     if (token) params.token = token;
+    let openid = wx.getStorageSync("wxOpenId");
+    if (openid) params.openid = openid;
 
     //获取本地session
     let session = wx.getStorageSync("wx_session");
@@ -98,6 +100,8 @@ export default class NetUtil {
    */
   static getJSON(url, params) {
     params = params || {};
+    let openid = wx.getStorageSync("wxOpenId");
+    if (openid) params.openid = openid;
 
     let hasFirstParams = url.indexOf("?") != -1;
     

@@ -20,4 +20,11 @@ export default class DiscussSev {
     return Net.getJSON(Config.SERVER.url.root + "/comments/findCommentByCommentId", { commentId: id });
   }
 
+  /**
+  * 新增一条评论
+  */
+  static addDiscuss(data) {
+    return Net.postJSON(Config.SERVER.url.root + "/discuss/addDiscuss", {}, data);
+  }
+
 }

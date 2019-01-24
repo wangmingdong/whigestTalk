@@ -81,9 +81,9 @@
                   {{item.content}}
                 </view>
                 <!-- 其他人评论 -->
-                <view class="discuss-other-chat">
+                <!-- <view class="discuss-other-chat">
                   some other talk
-                </view>
+                </view> -->
                 <!-- 底部信息 -->
                 <view class="discuss-base-info">
                   <view class="discuss-base-footer-info left">
@@ -121,6 +121,10 @@
         </view>
       </view>
     </view>
+    <!-- 底部加载更多 -->
+    <view class="footer-load-more" wx:if="{{currentTab == 0}}" bindtap='loadRankMore'>
+      {{isNoMore ? '没有更多了': '点击加载更多评论'}}
+    </view>
   </wux-refresher>
 
   <!-- 底部功能按钮 -->
@@ -148,13 +152,13 @@
           <wux-button size="small" outline block data-popup-type="0" type="stable" bind:click="switchEditPopup">取消</wux-button>
         </view>
         <view class="page-modal-container">
-          <wux-button size="small" block disabled="{{publishLoading}}" loading="{{publishLoading}}" type="balanced" open-type="getUserInfo"  bind:getuserinfo="publishComment">发布</wux-button>
+          <wux-button size="small" block disabled="{{publishLoading}}" loading="{{publishLoading}}" type="balanced" open-type="getUserInfo"  bind:getuserinfo="publishDiscuss">发布</wux-button>
         </view>
       </view>
       <view class=" animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
         <wux-cell-group>
           <wux-cell hover-class="none">
-            <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" controlled value="{{commentContent}}" placeholder="发表你的看法" />
+            <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" controlled value="{{discussContent}}" placeholder="发表你的看法" />
           </wux-cell>
         </wux-cell-group>
       </view>

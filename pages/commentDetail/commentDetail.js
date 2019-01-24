@@ -33,16 +33,17 @@ Page({
     discussList: [],
     discussTotal: 0,
     showEditPopup: 0,  // 显示新增评论弹窗
+    publishLoading: false,   // 发布状态
     isNoMore: false  // 不在加载了
   },
   onShow: function () {
-    wx.getSystemInfo({
-      success: (res) => {
-        this.setData({
-          height: res.windowHeight
-        })
-      }
-    })
+    // wx.getSystemInfo({
+    //   success: (res) => {
+    //     this.setData({
+    //       height: res.windowHeight - 600
+    //     })
+    //   }
+    // })
   },
 
   onLoad: function (options) {
@@ -297,6 +298,72 @@ Page({
       // 授权成功执行后续操作
       if (res) {
         this.giveGoodAction(e)
+      }
+    })
+  },
+
+  // 输入内容变化
+  changeEnterContent: function (e) {
+    this.setData({
+      discussContent: e.detail.value
+    })
+  },
+
+  // 清除手机信息
+  clearSystemInfo: function () {
+    this.setData({
+      systemInfo: {}
+    })
+  },
+
+  // 开启/关闭匿名
+  switchSecret: function (e) {
+    console.log(e)
+    this.setData({
+      isSecret: e.detail.value
+    })
+  },
+
+  // 新增一条评论
+  addNewDiscuss: function () {
+    let param = {
+      commentId: this.data.commentInfo.id,
+      content: this.data.discussContent,
+      openid: this.data.userInfo ? this.data.userInfo.openid : StorageUtil.getStorageSync('openid'),
+      userId: this.data.userInfo ? this.data.userInfo.id : '',
+      source: this.data.systemInfo ? this.data.systemInfo.model : '',
+      isSecret: this.data.isSecret
+    }
+    this.setData({
+      publishLoading: true
+    })
+    DiscussSev.addDiscuss(param).then(res => {
+      console.log(res)
+      if (res) {
+        this.onRefresh()
+        this.setData({
+          publishLoading: false,
+          discussContent: ''
+        })
+      }
+      this.switchEditPopup(
+        {
+          target: {
+            dataset: {popupType: 0}
+          }
+        }
+      )
+    }, err => {
+      console.log(err)
+    })
+  },
+
+  // 发布消息
+  publishDiscuss: function (e) {
+    this.getUserInfo(e, res => {
+      // 如果发布窗口已打开并且有内容，则直接发布
+      if (this.data.showEditPopup && this.data.discussContent) {
+        this.addNewDiscuss()
       }
     })
   },

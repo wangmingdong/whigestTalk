@@ -166,6 +166,7 @@
   bottom: 0;
   width: 100%;
   color: #afaeae;
+  background-color:#fff;
 }
 
 .footer-btn-group:after{
@@ -194,4 +195,12 @@
 
 .footer-btn-item:first-of-type{
   border-right: 1rpx solid #D9D9D9;
+}
+
+.footer-load-more{
+  margin-bottom:110rpx;
+  text-align:center;
+  padding:10rpx 0;
+  font-size: 30rpx;
+  color: #afaeae;
 }

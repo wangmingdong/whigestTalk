@@ -84,6 +84,10 @@ page{
   padding: 15rpx;
 }
 
+.card-header-icon .iconfont{
+
+}
+
 .card-avatar-container{
   display: flex;
   width: 100rpx;
@@ -322,4 +326,10 @@ page{
 .flex-align-center {
   display: flex;
   align-items: center;
+}
+
+.text-ellipsis{
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

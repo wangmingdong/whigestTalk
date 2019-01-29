@@ -21,6 +21,7 @@
     "wux-textarea": "../../lib/wux/textarea/index",
     "wux-tabs": "../../lib/wux/tabs/index",
     "wux-tab": "../../lib/wux/tab/index",
-    "wux-switch": "../../lib/wux/switch/index"
+    "wux-switch": "../../lib/wux/switch/index",
+    "wux-actionsheet": "../../lib/wux/actionsheet/index"
   }
 }

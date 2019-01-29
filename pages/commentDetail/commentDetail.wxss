@@ -204,3 +204,14 @@
   font-size: 30rpx;
   color: #afaeae;
 }
+
+.card-body.no-footer:after {
+  content: " ";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 0;
+  /* border-top: 2rpx solid #D9D9D9; */
+  border-bottom: none;
+}

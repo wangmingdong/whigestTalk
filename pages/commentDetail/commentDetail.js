@@ -6,7 +6,7 @@ import DiscussSev from "./../../api/discuss";
 import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
-import { $stopWuxRefresher } from '../../lib/wux/index'
+import { $stopWuxRefresher, $wuxActionSheet } from '../../lib/wux/index'
 
 //获取应用实例
 const app = getApp()
@@ -112,6 +112,39 @@ Page({
     console.log('onChangeTabItem', e)
     this.setData({
       currentTab: e.detail.key,
+    })
+  },
+
+  // 弹出/收回功能按钮
+  showCommentOptions: function (e) {
+    let self = this
+    $wuxActionSheet().showSheet({
+      titleText: '操作',
+      buttons: [{
+        text: 'Go Dialog'
+      },
+      {
+        text: 'Go Toast'
+      },
+      ],
+      buttonClicked(index, item) {
+        index === 0 && wx.navigateTo({
+          url: '/pages/dialog/index'
+        })
+
+        index === 1 && wx.navigateTo({
+          url: '/pages/toast/index'
+        })
+
+        return true
+      },
+      cancelText: '取消',
+      cancel() { },
+      destructiveText: '删除',
+      destructiveButtonClicked() {
+        console.log(self.data.commentInfo.id)
+        this.cancel()
+      },
     })
   },
 

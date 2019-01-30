@@ -81,8 +81,12 @@
               <view class="discuss-content-container">
                 <!-- 名字 -->
                 <view class="discuss-author-info">
-                  <view class="card-nickName" wx:if="{{item.userInfo.nickName && !item.isSecret}}">{{item.userInfo.nickName}}</view>
-                  <view class="card-nickName" wx:else>{{item.mockName}}</view>
+                  <view class="card-nickName full-width" wx:if="{{item.userInfo.nickName && !item.isSecret}}">{{item.userInfo.nickName}}</view>
+                  <view class="card-nickName full-width" wx:else>{{item.mockName}}</view>
+                  <!-- card 功能按钮 -->
+                  <view class="card-header-icon discuss-header-icon">
+                    <i class="iconfont icon-unfold" data-discuss-info="{{item}}" bindtap="showDiscussOptions"></i>
+                  </view>
                 </view>
                 <!-- 评论详情 -->
                 <view class="discuss-detail">

@@ -27,4 +27,11 @@ export default class DiscussSev {
     return Net.postJSON(Config.SERVER.url.root + "/discuss/addDiscuss", {}, data);
   }
 
+  /**
+  * 删除一条评论
+  */
+  static deleteDiscuss(id) {
+    return Net.getJSON(Config.SERVER.url.root + "/discuss/deleteDiscuss", { discussId: id });
+  }
+
 }

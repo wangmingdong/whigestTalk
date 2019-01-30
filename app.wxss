@@ -333,3 +333,7 @@ page{
   white-space: nowrap;
   overflow: hidden;
 }
+
+.full-width{
+  width: 100%;
+}

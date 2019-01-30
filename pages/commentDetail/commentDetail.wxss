@@ -139,6 +139,11 @@
 
 .discuss-author-info{
   padding: 5rpx 0;
+  display:flex;
+}
+
+.discuss-header-icon{
+  margin-right: -20rpx;
 }
 
 .discuss-detail{

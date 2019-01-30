@@ -115,27 +115,13 @@ Page({
     })
   },
 
-  // 弹出/收回功能按钮
+  // 弹出/收回评论功能按钮
   showCommentOptions: function (e) {
     let self = this
     $wuxActionSheet().showSheet({
       titleText: '操作',
-      buttons: [{
-        text: 'Go Dialog'
-      },
-      {
-        text: 'Go Toast'
-      },
-      ],
+      buttons: [],
       buttonClicked(index, item) {
-        index === 0 && wx.navigateTo({
-          url: '/pages/dialog/index'
-        })
-
-        index === 1 && wx.navigateTo({
-          url: '/pages/toast/index'
-        })
-
         return true
       },
       cancelText: '取消',
@@ -144,6 +130,51 @@ Page({
       destructiveButtonClicked() {
         console.log(self.data.commentInfo.id)
         this.cancel()
+      },
+    })
+  },
+
+  // 评论列表中筛选出删掉的
+  removeRowInDiscussList: function (id) {
+    for (let i = 0; i < this.data.discussList.length; i++) {
+      if (this.data.discussList[i].id == id) {
+        this.data.discussList.splice(i, 1)
+        i--
+      }
+    }
+    this.setData({
+      discussList: this.data.discussList
+    })
+  },
+
+  // 弹出、收回评论功能按钮
+  showDiscussOptions: function (e) {
+    console.log(e)
+    let discussInfo = e.target.dataset.discussInfo
+    let self = this
+    $wuxActionSheet().showSheet({
+      titleText: '删除评论',
+      buttons: [],
+      buttonClicked(index, item) {
+        return true
+      },
+      cancelText: '取消',
+      cancel() { },
+      destructiveText: '删除',
+      destructiveButtonClicked() {
+        console.log(discussInfo)
+        DiscussSev.deleteDiscuss(discussInfo.id).then(res => {
+          if (res && res.data) {
+            self.removeRowInDiscussList(discussInfo.id)
+            self.data.discussTotal--
+            self.setData({
+              discussTotal: self.data.discussTotal
+            })
+            // self.refreshAllData(self.data.commentInfo.id)
+            self.updateCommentData()
+          }
+          this.cancel()
+        })
       },
     })
   },
@@ -301,9 +332,7 @@ Page({
       openid: this.data.userInfo.openid,
       commentId: e.target.dataset.commentId
     }
-    console.log(param)
     CommentSev.giveGood(param).then(res => {
-      console.log(res)
       this.data.commentInfo.usedGood = res;
       let currentCommentInfo = this.data.commentInfo
       
@@ -374,6 +403,7 @@ Page({
       console.log(res)
       if (res) {
         this.onRefresh()
+        this.updateCommentData()
         this.setData({
           publishLoading: false,
           discussContent: ''

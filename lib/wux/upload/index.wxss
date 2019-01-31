@@ -21,8 +21,9 @@
   background-color: #fafafa;
   -webkit-transition: border-color 0.3s ease;
   transition: border-color 0.3s ease;
-  display: inline-block;
+  /* display: inline-block; */
   box-sizing: border-box;
+  float: left;
 }
 .wux-upload--picture-card .wux-upload__button {
   width: 100%;

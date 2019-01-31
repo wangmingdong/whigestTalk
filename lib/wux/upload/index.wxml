@@ -9,7 +9,8 @@
                 </view>
             </block>
         </block>
-        <view class="wux-upload__select" bindtap="onSelect">
+        <!-- 控制count的限制 -->
+        <view class="wux-upload__select" wx:if="{{fileList.length < count}}" bindtap="onSelect">
             <view class="wux-upload__button">
                 <slot></slot>
             </view>

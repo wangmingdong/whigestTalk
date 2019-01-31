@@ -212,13 +212,13 @@
       <view class="page-modal-footer animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
         <!-- 手机来源 -->
         <view class="modal-source" wx:if="{{systemInfo.model}}">
-          <view class="label-before-icon">
+          <!-- <view class="label-before-icon">
             <i class="iconfont icon-mobilephone label-icon-before"></i>
           </view>
           <view class="label-title">来自：{{systemInfo.model}} </view>
           <view class="label-close" bindtap='clearSystemInfo'>
             <i class="iconfont icon-close label-close-icon"></i>
-          </view>
+          </view> -->
         </view>
         <view wx:else></view>
 

@@ -25,11 +25,11 @@ Page({
       label: '文本',
       icon: 'http://static.weqianduan.com/icon-editor.png',
       type: 'text'
-    },
-    {
-      label: '图片',
-      icon: 'http://static.weqianduan.com/icon-camera.png',
-      type: 'picture'
+    // },
+    // {
+    //   label: '图片',
+    //   icon: 'http://static.weqianduan.com/icon-camera.png',
+    //   type: 'picture'
     }
     ],
     position: 'bottomRight',

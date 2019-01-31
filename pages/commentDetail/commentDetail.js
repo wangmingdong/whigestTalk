@@ -6,7 +6,8 @@ import DiscussSev from "./../../api/discuss";
 import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
-import { $stopWuxRefresher, $wuxActionSheet } from '../../lib/wux/index'
+import Config from "./../../config";
+import { $stopWuxRefresher, $wuxActionSheet, $wuxToast } from '../../lib/wux/index'
 
 //获取应用实例
 const app = getApp()
@@ -34,7 +35,9 @@ Page({
     discussTotal: 0,
     showEditPopup: 0,  // 显示新增评论弹窗
     publishLoading: false,   // 发布状态
-    isNoMore: false  // 不在加载了
+    isNoMore: false,  // 不在加载了
+    fileList: [],
+    uploadUrl: `${Config.SERVER.url.root}/common/upload`
   },
   onShow: function () {
     // wx.getSystemInfo({
@@ -104,6 +107,25 @@ Page({
         commentInfo: commentInfo
       })
       this.getDiscussList()
+    })
+  },
+
+  // 预览列表图片
+  previewImgs: function (e) {
+    let imgUrl = e.currentTarget.dataset.imgUrl
+    let imgList = e.currentTarget.dataset.imgList
+    wx.previewImage({
+      current: imgUrl,
+      urls: imgList
+    })
+  },
+
+  // 预览评论图片
+  previewDiscussImgs: function (e) {
+    let imgUrl = e.currentTarget.dataset.imgInfo
+    wx.previewImage({
+      current: imgUrl,
+      urls: [imgUrl]
     })
   },
 
@@ -395,7 +417,19 @@ Page({
       userId: this.data.userInfo ? this.data.userInfo.id : '',
       source: this.data.systemInfo ? this.data.systemInfo.model : '',
       isSecret: this.data.isSecret
+    }// 判断是否有图片
+    let selectImgs = []
+    if (this.data.fileList && this.data.fileList.length) {
+      this.data.fileList.forEach((v, i) => {
+        if (v.res && v.res.data) {
+          let realRes = JSON.parse(v.res.data)
+          if (realRes.status == 200) {
+            selectImgs.push(realRes.data.imgUrl)
+          }
+        }
+      })
     }
+    param.images = selectImgs
     this.setData({
       publishLoading: true
     })
@@ -425,8 +459,25 @@ Page({
   publishDiscuss: function (e) {
     this.getUserInfo(e, res => {
       // 如果发布窗口已打开并且有内容，则直接发布
-      if (this.data.showEditPopup && this.data.discussContent) {
-        this.addNewDiscuss()
+      if (this.data.showEditPopup) {
+        // 填写内容或者纯图片
+        if (this.data.discussContent || this.data.fileList.length) {
+          this.addNewDiscuss()
+        } else {
+          $wuxToast().show({
+            type: 'forbidden',
+            duration: 1500,
+            color: '#fff',
+            text: '写点东西吧'
+          })
+        }
+      } else {
+        $wuxToast().show({
+          type: 'forbidden',
+          duration: 1500,
+          color: '#fff',
+          text: '写点东西吧'
+        })
       }
     })
   },
@@ -508,5 +559,57 @@ Page({
         })
       }
     })
+  },
+
+
+  // 图片上传相关
+  changeImgUpload(e) {
+    console.log('changeImgUpload', e)
+    const { file } = e.detail
+    if (file.status === 'uploading') {
+      this.setData({
+        progress: 0,
+      })
+      wx.showLoading()
+    } else if (file.status === 'done') {
+      this.setData({
+        imageUrl: file.url,
+      })
+    }
+  },
+  imgUploadSuccess(e) {
+    console.log('imgUploadSuccess', e)
+    let fileDetail = e.detail
+    this.setData({
+      fileList: fileDetail.fileList
+    })
+  },
+  imgUploadFail(e) {
+    console.log('imgUploadFail', e)
+  },
+  imgUploadComplete(e) {
+    console.log('imgUploadComplete', e)
+    wx.hideLoading()
+  },
+  imgUploadProgress(e) {
+    console.log('imgUploadProgress', e)
+    this.setData({
+      progress: e.detail.file.progress,
+    })
+  },
+  imgUploadPreview(e) {
+    console.log('imgUploadPreview', e)
+    const { file, fileList } = e.detail
+    wx.previewImage({
+      current: file.url,
+      urls: fileList.map((n) => n.url),
+    })
+  },
+  imgUploadRemove(e) {
+    const { file, fileList } = e.detail
+    this.setData({
+      fileList: fileList.filter((n) => n.uid !== file.uid),
+    })
+    console.log(this.data.fileList)
   },
 })

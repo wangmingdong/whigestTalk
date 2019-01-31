@@ -22,6 +22,7 @@
     "wux-tabs": "../../lib/wux/tabs/index",
     "wux-tab": "../../lib/wux/tab/index",
     "wux-switch": "../../lib/wux/switch/index",
-    "wux-actionsheet": "../../lib/wux/actionsheet/index"
+    "wux-actionsheet": "../../lib/wux/actionsheet/index",
+    "wux-upload": "../../lib/wux/upload/index"
   }
 }

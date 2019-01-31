@@ -23,6 +23,16 @@
         </view>
         <view class="card-body" data-comment-info="{{item}}" bindtap='showCommentDetail'>
           {{item.content}}
+          <wux-row>
+            <wux-col span="4" wx:for="{{item.images}}" wx:for-item="img" wx:key="{{index}}">
+              <view class="card-img-list" data-img-url="{{img}}" data-img-list="{{item.images}}" catchtap="previewImgs">
+                <image class="card-img" mode="scaleToFill" lazy-load="true" src="{{img}}"></image>
+              </view>
+                <!-- <wux-image wux-class="card-wux-img" shape="rounded" src="{{item}}">
+                    <image src="https://loading.io/spinners/spinner/index.ajax-spinner-preloader.svg" slot="loading" />
+                </wux-image> -->
+            </wux-col>
+          </wux-row>
         </view>
         <view class="card-fooder">
           <view class="card-fooder-total discuss" data-comment-info="{{item}}" bindtap='showCommentDetail'>
@@ -70,12 +80,18 @@
           <wux-button size="small" block disabled="{{publishLoading}}" loading="{{publishLoading}}" type="balanced" open-type="getUserInfo"  bind:getuserinfo="publishComment">发布</wux-button>
         </view>
       </view>
-      <view class=" animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+      <view class="page-modal-textarea animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
         <wux-cell-group>
           <wux-cell hover-class="none">
             <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" controlled value="{{commentContent}}" placeholder="发表你的看法" />
           </wux-cell>
         </wux-cell-group>
+        <!-- 图片上传 -->
+        <view class="modal-upload-container">
+          <wux-upload listType="picture-card" controlled defaultFileList="{{ fileList }}" count="9" max="9" url="{{uploadUrl}}" bind:change="changeImgUpload" bind:success="imgUploadSuccess" bind:fail="imgUploadFail" bind:complete="imgUploadComplete"  bind:progress="imgUploadProgress" bind:preview="imgUploadPreview" bind:remove="imgUploadRemove">
+              <text>添加图片</text>
+          </wux-upload>
+        </view>
       </view>
       
       <view class="page-modal-footer animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">

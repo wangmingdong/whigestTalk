@@ -18,6 +18,7 @@
     "wux-card": "../../lib/wux/card/index",
     "wux-textarea": "../../lib/wux/textarea/index",
     "wux-select": "../../lib/wux/select/index",
-    "wux-switch": "../../lib/wux/switch/index"
+    "wux-switch": "../../lib/wux/switch/index",
+    "wux-upload": "../../lib/wux/upload/index"
   }
 }

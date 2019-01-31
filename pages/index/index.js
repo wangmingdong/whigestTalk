@@ -5,7 +5,8 @@ import CommentSev from "./../../api/comment";
 import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
-import { $stopWuxRefresher } from '../../lib/wux/index'
+import Config from "./../../config";
+import { $stopWuxRefresher } from '../../lib/wux/index';
 
 //获取应用实例
 const app = getApp()
@@ -36,7 +37,9 @@ Page({
     systemInfo: null,  // 手机信息
     commentContent: '',  // 新增输入内容
     isSecret: false, // 开启匿名
-    publishLoading: false   // 发布状态
+    publishLoading: false,   // 发布状态
+    fileList: [],
+    uploadUrl: `${Config.SERVER.url.root}/common/upload`
   },
 
   //事件处理函数
@@ -294,6 +297,19 @@ Page({
       source: this.data.systemInfo ? this.data.systemInfo.model : '', 
       isSecret: this.data.isSecret
     }
+    // 判断是否有图片
+    let selectImgs = []
+    if (this.data.fileList && this.data.fileList.length) {
+      this.data.fileList.forEach((v, i) => {
+        if (v.res && v.res.data) {
+          let realRes = JSON.parse(v.res.data)
+          if (realRes.status == 200) {
+            selectImgs.push(realRes.data.imgUrl)
+          }
+        }
+      })
+    }
+    param.images = selectImgs
     this.setData({
       publishLoading: true
     })
@@ -303,12 +319,24 @@ Page({
         this.onRefresh()
         this.setData({
           publishLoading: false,
-          commentContent: ''
+          commentContent: '',
+          fileList: [],
+          selectImgs: []
         })
       }
       this.switchEditPopup()
     }, err => {
       console.log(err)
+    })
+  },
+
+  // 预览列表图片
+  previewImgs: function (e) {
+    let imgUrl = e.currentTarget.dataset.imgUrl
+    let imgList = e.currentTarget.dataset.imgList
+    wx.previewImage({
+      current: imgUrl,
+      urls: imgList
     })
   },
 
@@ -432,5 +460,66 @@ Page({
     //     })
     //   }
     // })
-  }
+  },
+
+  // 图片上传相关
+  changeImgUpload(e) {
+    console.log('changeImgUpload', e)
+    const { file } = e.detail
+    if (file.status === 'uploading') {
+      this.setData({
+        progress: 0,
+      })
+      wx.showLoading()
+    } else if (file.status === 'done') {
+      this.setData({
+        imageUrl: file.url,
+      })
+    }
+  },
+  imgUploadSuccess(e) {
+    console.log('imgUploadSuccess', e)
+    let fileDetail = e.detail
+    this.setData({
+      fileList: fileDetail.fileList
+    })
+  },
+  imgUploadFail(e) {
+    console.log('imgUploadFail', e)
+  },
+  imgUploadComplete(e) {
+    console.log('imgUploadComplete', e)
+    wx.hideLoading()
+  },
+  imgUploadProgress(e) {
+    console.log('imgUploadProgress', e)
+    this.setData({
+      progress: e.detail.file.progress,
+    })
+  },
+  imgUploadPreview(e) {
+    console.log('imgUploadPreview', e)
+    const { file, fileList } = e.detail
+    wx.previewImage({
+      current: file.url,
+      urls: fileList.map((n) => n.url),
+    })
+  },
+  imgUploadRemove(e) {
+    const { file, fileList } = e.detail
+    this.setData({
+      fileList: fileList.filter((n) => n.uid !== file.uid),
+    })
+    console.log(this.data.fileList)
+    // wx.showModal({
+    //   content: '确定删除？',
+    //   success: (res) => {
+    //     if (res.confirm) {
+    //       this.setData({
+    //         fileList: fileList.filter((n) => n.uid !== file.uid),
+    //       })
+    //     }
+    //   },
+    // })
+  },
 })

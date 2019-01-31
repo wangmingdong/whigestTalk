@@ -150,6 +150,19 @@
   padding: 5rpx 0;
 }
 
+.discuss-img-container{
+  margin-top: 10rpx;
+}
+
+.discuss-img-list{
+  
+}
+
+.discuss-img{
+  width: 30%;
+  height: 180rpx;
+}
+
 .discuss-other-chat{
   padding: 5rpx 0;
 }

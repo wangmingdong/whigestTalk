@@ -32,4 +32,11 @@ export default class CommentSev {
     return Net.getJSON(Config.SERVER.url.root + "/comments/findCommentByCommentId", { commentId: id });
   }
 
+  /**
+  * 删除一条说说
+  */
+  static deleteComment(id) {
+    return Net.getJSON(Config.SERVER.url.root + "/comments/deleteComment", { commentId: id });
+  }
+
 }

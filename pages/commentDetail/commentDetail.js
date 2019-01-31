@@ -150,8 +150,13 @@ Page({
       cancel() { },
       destructiveText: '删除',
       destructiveButtonClicked() {
-        console.log(self.data.commentInfo.id)
-        this.cancel()
+        CommentSev.deleteComment(self.data.commentInfo.id).then(res => {
+          if (res && res.data) {
+            self.updateCommentData('delete')
+            NavigationUtil.navigateBack('/pages/index/index');
+          }
+          this.cancel()
+        })
       },
     })
   },
@@ -227,17 +232,28 @@ Page({
   },
 
   //  更新缓存中说说状态
-  updateCommentData: function () {
+  updateCommentData: function (type = 'update') {
     let commentList = StorageUtil.getStorageSync('commentList')
     let newCommentList = []
     if (commentList.length) {
-      newCommentList = commentList.map((v, i) => {
-        if (v.id == this.data.commentInfo.id) {
-          return  v = this.data.commentInfo
-        } else {
-          return v
+      if (type == 'update') {
+        newCommentList = commentList.map((v, i) => {
+          if (v.id == this.data.commentInfo.id) {
+            return v = this.data.commentInfo
+          } else {
+            return v
+          }
+        })
+      } else if (type == 'delete') {
+        for (let i = 0; i < commentList.length; i++) {
+          if (commentList[i].id == this.data.commentInfo.id) {
+            commentList.splice(i, 1)
+            i--
+            break
+          }
         }
-      })
+        newCommentList = commentList
+      }
     }
     StorageUtil.setStorageSync('commentList', newCommentList)
   },

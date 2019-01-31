@@ -28,16 +28,18 @@
         </view>
         <view class="card-body" data-comment-info="{{item}}" bindtap='showCommentDetail'>
           {{item.content}}
-          <wux-row>
-            <wux-col span="4" wx:for="{{item.images}}" wx:for-item="img" wx:key="{{index}}">
-              <view class="card-img-list" data-img-url="{{img}}" data-img-list="{{item.images}}" catchtap="previewImgs">
-                <image class="card-img" mode="scaleToFill" lazy-load="true" src="{{img}}"></image>
-              </view>
-                <!-- <wux-image wux-class="card-wux-img" shape="rounded" src="{{item}}">
-                    <image src="https://loading.io/spinners/spinner/index.ajax-spinner-preloader.svg" slot="loading" />
-                </wux-image> -->
-            </wux-col>
-          </wux-row>
+          <view class="mt-20">
+            <wux-row>
+              <wux-col span="4" wx:for="{{item.images}}" wx:for-item="img" wx:key="{{index}}">
+                <view class="card-img-list" data-img-url="{{img}}" data-img-list="{{item.images}}" catchtap="previewImgs">
+                  <image class="card-img" mode="scaleToFill" lazy-load="true" src="{{img}}"></image>
+                </view>
+                  <!-- <wux-image wux-class="card-wux-img" shape="rounded" src="{{item}}">
+                      <image src="https://loading.io/spinners/spinner/index.ajax-spinner-preloader.svg" slot="loading" />
+                  </wux-image> -->
+              </wux-col>
+            </wux-row>
+          </view>
         </view>
         <view class="card-fooder">
           <view class="card-fooder-total discuss" data-comment-info="{{item}}" bindtap='showCommentDetail'>

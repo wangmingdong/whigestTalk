@@ -37,7 +37,7 @@ Page({
     publishLoading: false,   // 发布状态
     isNoMore: false,  // 不在加载了
     fileList: [],
-    uploadUrl: `${Config.SERVER.url.root}/common/upload`
+    uploadUrl: `${Config.SERVER.url.root}/common/uploads`
   },
   onShow: function () {
     // wx.getSystemInfo({
@@ -325,7 +325,8 @@ Page({
     let status = parseInt(e.target.dataset.popupType)
     let self = this
     self.setData({
-      showEditPopup: status
+      showEditPopup: status,
+      fileList: []
     })
     // self.setData({
     //   showEditPopup: !e || e.target
@@ -485,7 +486,8 @@ Page({
         this.updateCommentData()
         this.setData({
           publishLoading: false,
-          discussContent: ''
+          discussContent: '',
+          fileList: []
         })
       }
       this.switchEditPopup(

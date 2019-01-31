@@ -264,11 +264,13 @@ Page({
     let self = this
     if (!e || e.target) {
       self.setData({
-        showEditPopup: false
+        showEditPopup: false,
+        fileList: []
       })
     } else {
       self.setData({
-        showEditPopup: true
+        showEditPopup: true,
+        fileList: []
       })
     }
     // self.setData({

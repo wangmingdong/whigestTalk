@@ -266,6 +266,22 @@ page{
   
 }
 
+.native-textarea{
+  width: 100%;
+}
+
+.textarea-footer{
+  padding:10rpx 0;
+  width:100%;
+  display:flex;
+  justify-content:right;
+  flex-direction:row-reverse;
+}
+
+.textarea-footer-text{
+  margin:0 20rpx;
+}
+
 .page-modal-textarea::after{
   content: " ";
   position: absolute;

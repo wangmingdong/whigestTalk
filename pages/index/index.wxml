@@ -75,7 +75,7 @@
   </wux-popup> -->
 
 
-  <view class-names="animated faster {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+  <view wx:if="{{showEditPopup}}" class-names="animated faster {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
     <view class="page page-modal animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
       <view class="page-modal-header">
         <view class="page-modal-container">
@@ -88,11 +88,16 @@
       <view class="page-modal-textarea animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
         <wux-cell-group>
           <wux-cell hover-class="none">
-            <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" controlled value="{{commentContent}}" placeholder="发表你的看法" />
+          <textarea maxlength="180" class="native-textarea"  value="{{commentContent}}"
+            placeholder="发表你的看法" bindinput="changeEnterContent"/>
+            <!-- <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" controlled value="{{commentContent}}" placeholder="发表你的看法" /> -->
           </wux-cell>
+          <view class="textarea-footer">
+            <text class="textarea-footer-text">{{commentContent.length}} / 180</text>
+          </view>
         </wux-cell-group>
         <!-- 图片上传 -->
-        <view class="modal-upload-container">
+        <view class="modal-upload-container" wx:if="{{showEditPopup}}">
           <wux-upload listType="picture-card" controlled defaultFileList="{{ fileList }}" count="9" max="9" url="{{uploadUrl}}" bind:change="changeImgUpload" bind:success="imgUploadSuccess" bind:fail="imgUploadFail" bind:complete="imgUploadComplete"  bind:progress="imgUploadProgress" bind:preview="imgUploadPreview" bind:remove="imgUploadRemove">
               <text>添加图片</text>
           </wux-upload>

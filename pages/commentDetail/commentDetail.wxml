@@ -21,7 +21,7 @@
           </view>
         </view>
         <!-- card 功能按钮 -->
-        <view class="card-header-icon">
+        <view class="card-header-icon" wx:if="{{commentInfo.isSelf}}">
           <i class="iconfont icon-unfold" bindtap="showCommentOptions"></i>
         </view>
       </view>
@@ -92,7 +92,7 @@
                   <view class="card-nickName full-width" wx:if="{{item.userInfo.nickName && !item.isSecret}}">{{item.userInfo.nickName}}</view>
                   <view class="card-nickName full-width" wx:else>{{item.mockName}}</view>
                   <!-- card 功能按钮 -->
-                  <view class="card-header-icon discuss-header-icon">
+                  <view class="card-header-icon discuss-header-icon" wx:if="{{item.isSelf}}">
                     <i class="iconfont icon-unfold" data-discuss-info="{{item}}" bindtap="showDiscussOptions"></i>
                   </view>
                 </view>

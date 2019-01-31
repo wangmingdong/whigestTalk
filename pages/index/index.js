@@ -6,7 +6,7 @@ import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
 import Config from "./../../config";
-import { $stopWuxRefresher } from '../../lib/wux/index';
+import { $stopWuxRefresher, $wuxActionSheet } from '../../lib/wux/index';
 
 //获取应用实例
 const app = getApp()
@@ -68,6 +68,36 @@ Page({
         commentList: commentList
       })
     }
+  },
+
+  //  更新缓存中说说状态
+  updateCommentData: function (type = 'update', comment) {
+    let commentList = StorageUtil.getStorageSync('commentList')
+    let newCommentList = []
+    if (commentList.length) {
+      if (type == 'update') {
+        newCommentList = commentList.map((v, i) => {
+          if (v.id == comment.id) {
+            return v = comment
+          } else {
+            return v
+          }
+        })
+      } else if (type == 'delete') {
+        for (let i = 0; i < commentList.length; i++) {
+          if (commentList[i].id == comment.id) {
+            commentList.splice(i, 1)
+            i--
+            break
+          }
+        }
+        newCommentList = commentList
+      }
+    }
+    StorageUtil.setStorageSync('commentList', newCommentList)
+    this.setData({
+      commentList: newCommentList
+    })
   },
 
   // 登录查询
@@ -327,6 +357,30 @@ Page({
       this.switchEditPopup()
     }, err => {
       console.log(err)
+    })
+  },
+
+  // 弹出/收回说说功能按钮
+  showCommentOptions: function (e) {
+    let commentInfo = e.target.dataset.commentInfo
+    let self = this
+    $wuxActionSheet().showSheet({
+      titleText: '操作',
+      buttons: [],
+      buttonClicked(index, item) {
+        return true
+      },
+      cancelText: '取消',
+      cancel() { },
+      destructiveText: '删除',
+      destructiveButtonClicked() {
+        CommentSev.deleteComment(commentInfo.id).then(res => {
+          if (res && res.data) {
+            self.updateCommentData('delete', commentInfo)
+          }
+          this.cancel()
+        })
+      },
     })
   },
 

@@ -137,7 +137,7 @@ Page({
     })
   },
 
-  // 弹出/收回评论功能按钮
+  // 弹出/收回说说功能按钮
   showCommentOptions: function (e) {
     let self = this
     $wuxActionSheet().showSheet({
@@ -364,6 +364,33 @@ Page({
       isSecret: e.detail.value
     })
   },
+
+  // 获取点赞人列表
+  getGoodUsersList: function () {
+    CommentSev.findGoodListByCommentId(this.data.commentInfo.id).then(res => {
+      if (res && res.data) {
+        this.data.commentInfo.giveGoodUsers = res.data
+        this.setData({
+          commentInfo: this.data.commentInfo
+        })
+      }
+    })
+  },
+
+  // 从点赞列表中移除取消点赞的人
+  removeGoodUser: function () {
+    for (let i = 0; i < this.data.commentInfo.giveGoodUsers.length; i++) {
+      if (this.data.commentInfo.giveGoodUsers[i].openid == this.data.userInfo.openid) {
+        this.data.commentInfo.giveGoodUsers.splice(i, 1)
+        i--
+        break
+      }
+    }
+    this.setData({
+      commentInfo: this.data.commentInfo
+    })
+  },
+
   // 点赞请求
   giveGoodAction: function (e) {
     let param = {
@@ -379,10 +406,12 @@ Page({
         if (res.data) {
           currentCommentInfo.goodNum++
           currentCommentInfo.usedGood = true
+          this.getGoodUsersList()
         } else {
           // 如果已经赞了则-1
           currentCommentInfo.goodNum--
           currentCommentInfo.usedGood = false
+          this.removeGoodUser()
         }
         this.setData({
           commentInfo: currentCommentInfo

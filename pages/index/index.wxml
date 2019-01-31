@@ -1,5 +1,6 @@
 <!--index.wxml-->
 <view class="container">
+  <wux-actionsheet id="wux-actionsheet" />
   <!-- 浮动按钮 -->
   <wux-floating-button wx:if="{{!showEditPopup}}" position="{{ position }}" theme="{{ theme }}" buttons="{{ buttons }}" bind:change="onChange" bind:click="clickFloatBtn" bind:contact="onContact" bind:getuserinfo="onGotUserInfo" />
 
@@ -19,6 +20,10 @@
               <text class="card-time">{{item.fmtCreateTime}}</text>
               <text class="card-source" wx:if="{{item.source}}">来自 {{item.source}}</text>
             </view>
+          </view>
+          <!-- card 功能按钮 -->
+          <view class="card-header-icon" wx:if="{{item.isSelf}}">
+            <i class="iconfont icon-unfold" data-comment-info="{{item}}" bindtap="showCommentOptions"></i>
           </view>
         </view>
         <view class="card-body" data-comment-info="{{item}}" bindtap='showCommentDetail'>

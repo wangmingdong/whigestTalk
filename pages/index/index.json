@@ -19,6 +19,7 @@
     "wux-textarea": "../../lib/wux/textarea/index",
     "wux-select": "../../lib/wux/select/index",
     "wux-switch": "../../lib/wux/switch/index",
+    "wux-actionsheet": "../../lib/wux/actionsheet/index",
     "wux-upload": "../../lib/wux/upload/index"
   }
 }

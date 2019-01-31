@@ -81,7 +81,7 @@ page{
   /* border:1px solid #eee; */
   border-top-left-radius:10rpx;
   border-top-right-radius:10rpx;
-  padding: 15rpx;
+  padding: 20rpx;
 }
 
 .card-header-icon .iconfont{
@@ -116,7 +116,7 @@ page{
 }
 
 .card-body{
-  padding: 15rpx;
+  padding: 20rpx;
   position: relative;
   word-break:break-all;
 }

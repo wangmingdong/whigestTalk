@@ -33,6 +33,13 @@ export default class CommentSev {
   }
 
   /**
+   * 根据commentId查询点赞人列表
+   */
+  static findGoodListByCommentId(id) {
+    return Net.getJSON(Config.SERVER.url.root + "/comments/findGoodListByCommentId", { commentId: id });
+  }
+
+  /**
   * 删除一条说说
   */
   static deleteComment(id) {

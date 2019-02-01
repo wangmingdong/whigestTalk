@@ -37,7 +37,7 @@ Page({
     publishLoading: false,   // 发布状态
     isNoMore: false,  // 不在加载了
     fileList: [],
-    uploadUrl: `${Config.SERVER.url.root}/common/uploads`
+    uploadUrl: `${Config.SERVER.url.root}/common/upload`
   },
   onShow: function () {
     // wx.getSystemInfo({
@@ -480,7 +480,6 @@ Page({
       publishLoading: true
     })
     DiscussSev.addDiscuss(param).then(res => {
-      console.log(res)
       if (res) {
         this.onRefresh()
         this.updateCommentData()
@@ -498,6 +497,9 @@ Page({
         }
       )
     }, err => {
+      this.setData({
+        publishLoading: false,
+      })
       console.log(err)
     })
   },

@@ -97,6 +97,7 @@
   width:80rpx;
   height:80rpx;
   border-radius:50%;
+  background-color:#f9f9f9;
 }
 
 .discuss-content-container{

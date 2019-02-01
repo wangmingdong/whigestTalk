@@ -6,7 +6,7 @@ import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
 import Config from "./../../config";
-import { $stopWuxRefresher, $wuxActionSheet } from '../../lib/wux/index';
+import { $stopWuxRefresher, $wuxActionSheet, $wuxToast } from '../../lib/wux/index';
 
 //获取应用实例
 const app = getApp()
@@ -440,8 +440,25 @@ Page({
   publishComment: function (e) {
     this.getUserInfo(e, res => {
       // 如果发布窗口已打开并且有内容，则直接发布
-      if (this.data.showEditPopup && this.data.commentContent) {
-        this.addNewComment()
+      if (this.data.showEditPopup) {
+        // 填写内容或者纯图片
+        if (this.data.commentContent || this.data.fileList.length) {
+          this.addNewComment()
+        } else {
+          $wuxToast().show({
+            type: 'forbidden',
+            duration: 1500,
+            color: '#fff',
+            text: '写点东西吧'
+          })
+        }
+      } else {
+        $wuxToast().show({
+          type: 'forbidden',
+          duration: 1500,
+          color: '#fff',
+          text: '写点东西吧'
+        })
       }
     })
   },

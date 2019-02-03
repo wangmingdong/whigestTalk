@@ -5,7 +5,7 @@
 
 var checkCurrentEnv = function (env) {
 
-  let port = '3000'||'80';
+  let port = '3003'||'80';
 
   // if (!env) {
   //   env = 'localhost';
@@ -15,11 +15,13 @@ var checkCurrentEnv = function (env) {
 
   switch (env) {
     case 'dev':
-      env = '172.31.121.57';
-      // env = '192.168.43.157';
+      // env = '172.31.121.57';
+      env = '192.168.43.157';
       break;
     case 'pre':
-      env = 'weqianduan.com';
+      env = '148.70.56.11';
+      // port = '8082';
+      // env = 'whigest.weqianduan.com';
       break;
     default:
       env = 'weqianduan.com';
@@ -63,7 +65,7 @@ var checkCurrentEnv = function (env) {
 
 //环境检测 必填
 // dev：开发环境 test：测试环境 pro: 生产环境  pre 预发布
-var SERVER = checkCurrentEnv("dev");
+var SERVER = checkCurrentEnv("pre");
 console.log("当前环境:" + JSON.stringify(SERVER));
 
 //配置腾讯地图key

@@ -22,7 +22,7 @@ Page({
     rankPageNum: [],
     commentList: [],
     buttons: [{
-      label: '文本',
+      label: '发说说',
       icon: 'http://static.weqianduan.com/icon-editor.png',
       type: 'text'
     // },

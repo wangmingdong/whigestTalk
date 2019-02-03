@@ -33,7 +33,7 @@
             <wux-row>
               <wux-col span="4" wx:for="{{commentInfo.images}}" wx:for-item="img" wx:key="{{index}}">
                 <view class="card-img-list" data-img-url="{{img}}" data-img-list="{{commentInfo.images}}" catchtap="previewImgs">
-                  <image class="card-img" mode="scaleToFill" lazy-load="true" src="{{img}}"></image>
+                  <image class="card-img" mode="aspectFill" lazy-load="true" src="{{img}}"></image>
                 </view>
               </wux-col>
             </wux-row>
@@ -108,7 +108,7 @@
                     <!-- 图片评论 -->
                     <view class="discuss-img-container" wx:if="{{item.images && item.images.length}}">
                       <view class="discuss-img-list" wx:for="{{item.images}}" wx:for-item="img" wx:key="{{index}}">
-                        <image class="discuss-img" mode="scaleToFill" lazy-load="true" src="{{img}}" data-img-info="{{img}}" catchtap="previewDiscussImgs"></image>
+                        <image class="discuss-img" mode="aspectFill" lazy-load="true" src="{{img}}" data-img-info="{{img}}" catchtap="previewDiscussImgs"></image>
                       </view>
                     </view>
                   </view>

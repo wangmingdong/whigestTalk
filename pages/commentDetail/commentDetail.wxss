@@ -234,3 +234,22 @@
   /* border-top: 2rpx solid #D9D9D9; */
   border-bottom: none;
 }
+
+.block-view{
+  background-color: #eeeeee;
+  height: 40rpx;
+  margin:5rpx;
+  float:left;
+}
+
+.card-nickName.block-view {
+  width: 200rpx;
+}
+
+.card-time.block-view {
+  width: 200rpx;
+}
+
+.card-source.block-view{
+  width: 200rpx;
+}

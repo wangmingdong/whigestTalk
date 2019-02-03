@@ -411,3 +411,9 @@ page{
 .mt-20{
   margin-top: 20rpx;
 }
+
+.wux-loading{
+  text-align: center;
+  margin: 10rpx;
+  margin-top: 20rpx;
+}

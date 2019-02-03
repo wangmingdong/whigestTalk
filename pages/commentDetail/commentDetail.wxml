@@ -11,7 +11,7 @@
             <image class="card-avatar-img" wx:elif="{{commentInfo.mockAvatar}}" src="{{commentInfo.mockAvatar}}"></image>
             <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
           </view>
-          <view class="card-header-right">
+          <view class="card-header-right" wx:if="{{commentInfo.id}}">
             <view class="card-nickName" wx:if="{{commentInfo.userInfo.nickName && !commentInfo.isSecret}}">{{commentInfo.userInfo.nickName}}</view>
             <view class="card-nickName" wx:else>{{commentInfo.mockName}}</view>
             <view class="card-shot-info">
@@ -20,6 +20,13 @@
               </text> -->
               <text class="card-time">{{commentInfo.fmtCreateTime}}</text>
               <text class="card-source" wx:if="{{commentInfo.source}}">来自 {{commentInfo.source}}</text>
+            </view>
+          </view>
+          <view class="card-header-right" wx:else>
+            <view class="card-nickName block-view"></view>
+            <view class="card-shot-info">
+              <text class="card-time  block-view"></text>
+              <text class="card-source  block-view" ></text>
             </view>
           </view>
           <!-- card 功能按钮 -->
@@ -78,12 +85,15 @@
           </wux-tabs>
         </view>
         <view class="chat-body">
+          <view class="wux-loading" wx:if="{{spinning}}">
+            <wux-spin wux-class="spin" />
+          </view>
           <view wx:if="{{currentTab == 0}}" class="chat-body-container">
-            <view wx:if="{{!discussList.length}}" class="chat-body-empty">
+            <view wx:if="{{!discussList.length && !spinning}}" class="chat-body-empty">
               暂无评论
             </view>
             <view wx:if="{{discussList.length}}">
-              <view class="discuss-container" wx:key="{{index}}" wx:for="{{discussList}}">
+              <view class="discuss-container animated fadeInRight" wx:key="{{index}}" wx:for="{{discussList}}">
                 <view class="discuss-avatar-container">
                   <view class="discuss-avatar-main">
                     <image class="discuss-avatar-img" wx:if="{{item.userInfo.avatarUrl && !item.isSecret}}" src="{{item.userInfo.avatarUrl}}"></image>

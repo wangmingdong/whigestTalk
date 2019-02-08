@@ -54,6 +54,11 @@ export default class NetUtil {
         success: (res) => {
           console.log("请求回来了...", res);;
           if (res.statusCode != 200) {
+            wx.showToast({
+              title: "服务端错误:" + res.statusCode + ', ' + res.data.message,
+              icon: 'none',
+              duration: 2000
+            })
             reject({ 
               code: res.statusCode,
               msg: "服务端错误:" + res.statusCode + ', ' + res.data.message
@@ -127,6 +132,11 @@ export default class NetUtil {
         .then(res => {
           if (res.statusCode != 200) {
             reject({ msg: "服务端错误:" + res.statusCode })
+            wx.showToast({
+              title: "服务端错误:" + res.statusCode + ', ' + res.data.message,
+              icon: 'none',
+              duration: 2000
+            })
           }
           else {
             resolver(res.data);

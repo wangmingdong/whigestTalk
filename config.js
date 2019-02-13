@@ -19,9 +19,9 @@ var checkCurrentEnv = function (env) {
       // env = '192.168.43.157';
       break;
     case 'pre':
-      env = '148.70.56.11';
-      // port = '8082';
-      // env = 'whigest.weqianduan.com';
+      // env = '148.70.56.11';
+      port = '3004';
+      env = 'music.weqianduan.com';
       break;
     default:
       env = 'weqianduan.com';
@@ -56,8 +56,8 @@ var checkCurrentEnv = function (env) {
   //端口检查
   for (var obj in SERVER.url) {   
     var domain = `${env}`;
-    // SERVER.url[obj] = `https://${domain}:${port}${SERVER.url[obj]}`;
-    SERVER.url[obj] = `http://${domain}:${port}${SERVER.url[obj]}`;    
+    SERVER.url[obj] = `https://${domain}:${port}${SERVER.url[obj]}`;
+    // SERVER.url[obj] = `http://${domain}:${port}${SERVER.url[obj]}`;    
     
   }
   return SERVER;

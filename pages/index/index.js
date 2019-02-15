@@ -595,4 +595,29 @@ Page({
     //   },
     // })
   },
+
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function (e) {
+    return {
+      title: '智麦说，只属于智麦鲜啤的朋友圈',
+      path: '/pages/index/index',
+      imageUrl: "http://static.weqianduan.com/whigestShow2.jpeg",
+      // success: function (res) {
+      //   // 转发成功
+      //   // 分享内容 
+      //   if (type == '1') {
+      //     self.shareToAddCount(2)
+      //   } else {
+      //     self.shareToAddCount()
+      //   }
+      // },
+      // fail: function (res) {
+      //   // 转发失败  
+      //   console.log(res)
+      // }
+    }
+  }
 })

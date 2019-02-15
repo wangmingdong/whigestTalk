@@ -661,4 +661,39 @@ Page({
     })
     console.log(this.data.fileList)
   },
+
+  /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function (e) {
+    let title = '智麦说，只属于智麦鲜啤的朋友圈';
+    let imageUrl = 'http://static.weqianduan.com/whigestShow2.jpeg';
+    let commentInfo = this.data.commentInfo
+    if (commentInfo) {
+      if (commentInfo.content) {
+        title = commentInfo.content
+      }
+      if (commentInfo.images && commentInfo.images.length) {
+        imageUrl = commentInfo.images[0]
+      }
+    }
+    return {
+      title: title,
+      path: '/pages/commentDetail/commentDetail?id=' + this.data.commentInfo.id,
+      imageUrl: imageUrl,
+      // success: function (res) {
+      //   // 转发成功
+      //   // 分享内容 
+      //   if (type == '1') {
+      //     self.shareToAddCount(2)
+      //   } else {
+      //     self.shareToAddCount()
+      //   }
+      // },
+      // fail: function (res) {
+      //   // 转发失败  
+      //   console.log(res)
+      // }
+    }
+  }
 })

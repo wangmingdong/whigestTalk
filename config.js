@@ -7,6 +7,7 @@ var checkCurrentEnv = function (env) {
 
   let port = '3003'||'80';
 
+  const staticEnv = env;
   // if (!env) {
   //   env = 'localhost';
   // } else {
@@ -56,9 +57,11 @@ var checkCurrentEnv = function (env) {
   //端口检查
   for (var obj in SERVER.url) {   
     var domain = `${env}`;
-    SERVER.url[obj] = `https://${domain}:${port}${SERVER.url[obj]}`;
-    // SERVER.url[obj] = `http://${domain}:${port}${SERVER.url[obj]}`;    
-    
+    if (staticEnv == 'dev' || !staticEnv) {
+      SERVER.url[obj] = `http://${domain}:${port}${SERVER.url[obj]}`;
+    } else {
+      SERVER.url[obj] = `https://${domain}:${port}${SERVER.url[obj]}`;  
+    }
   }
   return SERVER;
 }

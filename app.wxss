@@ -417,3 +417,18 @@ page{
   margin: 10rpx;
   margin-top: 20rpx;
 }
+
+/* 浮动按钮 */
+.fixed-btn-container{
+  position:fixed;
+  bottom:10%;
+  right:10%;
+  background-color:#33cd5f;
+  color: #fff;
+  border-radius:50%;
+  width:70rpx;
+  height:70rpx;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}

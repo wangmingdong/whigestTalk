@@ -662,6 +662,11 @@ Page({
     console.log(this.data.fileList)
   },
 
+  // 返回主页
+  backToHome () {
+    NavigationUtil.reLaunch('/pages/index/index')
+  },
+
   /**
    * 用户点击右上角分享
    */

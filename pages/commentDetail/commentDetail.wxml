@@ -244,4 +244,12 @@
       </view>
     </view>
   </view>
+
+  <!-- 浮动按钮 返回首页 -->
+  <view class="fixed-btn-container" bindtap='backToHome'>
+    <i class="iconfont icon-homepage" style="font-size: 50rpx;"></i>
+    <!-- <view class="fixed-btn">
+      首页
+    </view> -->
+  </view>
 </view>

@@ -57,7 +57,12 @@ Page({
     let commentList = StorageUtil.getStorageSync('commentList')
     wx.getSystemInfo({
       success: (res) => {
+        // this.setData({
+        //   height: res.windowHeight
+        // })
+        res.model = res.model.split('<')[0].replace(/(^\s*)|(\s*$)/g, "")
         this.setData({
+          systemInfo: res,
           height: res.windowHeight
         })
       }
@@ -135,24 +140,47 @@ Page({
       if (res) {
         StorageUtil.setStorageSync("sessionKey", res.session_key);
         StorageUtil.setStorageSync("openid", res.openid);
-        if (userInfo) {
-          userInfo.openid = res.openid
-        } else {
-          userInfo = {
-            openid: res.openid
-          }
-        }
-        app.globalData.userInfo = userInfo
-        self.setData({
-          userInfo: userInfo,
-          hasUserInfo: userInfo
+        // if (userInfo) {
+        //   userInfo.openid = res.openid
+        // } else {
+        //   userInfo = {
+        //     openid: res.openid
+        //   }
+        // }
+        self.findUserByOpenId(res, () => {
+          app.globalData.userInfo = userInfo
+          self.setData({
+            userInfo: userInfo,
+            hasUserInfo: userInfo
+          })
+          console.log(userInfo)
+          // 查询评论数据
+          self.getCommentList()
         })
-        console.log(userInfo)
-        // 查询评论数据
-        self.getCommentList()
       }
     })
     
+  },
+
+  // 查询用户信息
+  findUserByOpenId: function (res, fn) {
+    User.findUserByOpenId(res.openid).then(info => {
+      if (info.data) {
+        app.globalData.userInfo = info.data
+        this.setData({
+          userInfo: info.data,
+          hasUserInfo: info.data
+        })
+        StorageUtil.setStorageSync("userInfo", info.data);
+        if (fn) {
+          fn(info.data)
+        }
+      } else {
+        if (fn) {
+          fn(res)
+        }
+      }
+    })
   },
 
   // 格式化数据
@@ -162,6 +190,9 @@ Page({
       if (v.createTime) {
         // v.fmtCreateTime = FormatUtil.isToday(v.createTime)
         v.fmtCreateTime = FormatUtil.getFullDate(v.createTime, '.')
+      }
+      if (v.source) {
+        v.source = v.source.split('<')[0].replace(/(^\s*)|(\s*$)/g, "")
       }
     })
     return commentList;
@@ -278,22 +309,23 @@ Page({
     // })
 
     // 打开新增
-    if (self.data.showEditPopup) {
-      wx.getSystemInfo({
-        success: function (res) {
-          console.log(res)
-          if (res) {
-            self.setData({
-              systemInfo: res
-            })
-          }
-        },
-        fail: function (err) {
+    // if (self.data.showEditPopup) {
+    //   wx.getSystemInfo({
+    //     success: function (res) {
+    //       console.log(res)
+    //       if (res) {
+    //         res.model = res.model.split('<')[0].replace(/(^\s*)|(\s*$)/g, "")
+    //         self.setData({
+    //           systemInfo: res
+    //         })
+    //       }
+    //     },
+    //     fail: function (err) {
           
-        },
-        complete: function (complete) { },
-      })
-    }
+    //     },
+    //     complete: function (complete) { },
+    //   })
+    // }
   },
 
   // 输入内容变化

@@ -91,6 +91,19 @@
 .discuss-avatar-main{
   display:flex;
   width:80rpx;
+  position: relative;
+}
+
+
+.discuss-avatar-icon{
+  position:absolute;
+  width: 35rpx;
+  height: 35rpx;
+  border-radius: 50%;
+  box-shadow: 0 0 4rpx rgba(0,0,0,0.3);
+  vertical-align: -2px;
+  bottom:-3rpx;
+  right:-3rpx;
 }
 
 .discuss-avatar-img{

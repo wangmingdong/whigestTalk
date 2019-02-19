@@ -37,7 +37,8 @@ Page({
     publishLoading: false,   // 发布状态
     isNoMore: false,  // 不在加载了
     fileList: [],
-    uploadUrl: `${Config.SERVER.url.root}/common/upload`
+    uploadUrl: `${Config.SERVER.url.root}/common/upload`,
+    share: app.globalData.share
   },
   onShow: function () {
     // wx.getSystemInfo({
@@ -54,12 +55,12 @@ Page({
     let userInfo = StorageUtil.getStorageSync('userInfo')
     let commentId = options.id
     // 如果缓存有值，先取缓存
-    // if (commentInfo) {
-    //   console.log(commentInfo)
-    //   this.setData({
-    //     commentInfo: commentInfo
-    //   })
-    // }
+    if (commentInfo && commentInfo.id == commentId) {
+      console.log(commentInfo)
+      this.setData({
+        commentInfo: commentInfo
+      })
+    }
     console.log(options)
     let self = this
     if (userInfo) {
@@ -103,6 +104,9 @@ Page({
       console.log(res)
       let commentInfo = res.data
       commentInfo.fmtCreateTime = FormatUtil.getFullDate(commentInfo.createTime, '.')
+      if (commentInfo.source) {
+        commentInfo.source = commentInfo.source.split('<')[0].replace(/(^\s*)|(\s*$)/g, "")
+      }
       this.setData({
         commentInfo: commentInfo
       })

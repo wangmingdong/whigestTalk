@@ -36,14 +36,14 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 0,
 			"list": [
 				{
 					"id": 0,
 					"name": "详情页",
 					"pathName": "pages/commentDetail/commentDetail",
 					"query": "id=63",
-					"scene": null
+					"scene": 1001
 				},
 				{
 					"id": -1,

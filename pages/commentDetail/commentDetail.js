@@ -38,9 +38,12 @@ Page({
     isNoMore: false,  // 不在加载了
     fileList: [],
     uploadUrl: `${Config.SERVER.url.root}/common/upload`,
-    share: app.globalData.share
+    share: false
   },
   onShow: function () {
+    this.setData({
+      share: app.globalData.share
+    })
     // wx.getSystemInfo({
     //   success: (res) => {
     //     this.setData({

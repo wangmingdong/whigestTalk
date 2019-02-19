@@ -470,3 +470,7 @@ page{
   align-items:center;
   justify-content:center;
 }
+
+.block-card-header{
+  padding:20rpx;
+}

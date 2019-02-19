@@ -46,6 +46,7 @@ Page({
   showCommentDetail: function(e) {
     let commentInfo = e.currentTarget.dataset.commentInfo
     StorageUtil.setStorageSync("commentInfo", commentInfo);
+    app.globalData.share = false;
     NavigationUtil.navigateTo('../commentDetail/commentDetail', { id: commentInfo.id } )
     // wx.navigateTo({
     //   url: '../logs/logs'

@@ -5,14 +5,14 @@
   <view style="margin-bottom: 100rpx;margin-top: -10rpx;">
     <wux-refresher id="wux-refresher" bind:pulling="onPulling" bind:refresh="onRefresh">
       <view class="card-container">
-        <view class="card-header">
+        <view class="card-header" wx:if="{{commentInfo.id}}">
           <view class="card-avatar-container">
             <image class="avatar-icon" wx:if="{{!commentInfo.isSecret && commentInfo.userInfo.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
             <image class="card-avatar-img" wx:if="{{commentInfo.userInfo.avatarUrl && !commentInfo.isSecret}}" src="{{commentInfo.userInfo.avatarUrl}}"></image>
             <image class="card-avatar-img" wx:elif="{{commentInfo.mockAvatar}}" src="{{commentInfo.mockAvatar}}"></image>
             <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
           </view>
-          <view class="card-header-right" wx:if="{{commentInfo.id}}">
+          <view class="card-header-right">
             <view class="card-nickName" wx:if="{{commentInfo.userInfo.nickName && !commentInfo.isSecret}}">{{commentInfo.userInfo.nickName}}</view>
             <view class="card-nickName" wx:else>{{commentInfo.mockName}}</view>
             <view class="card-shot-info">
@@ -23,17 +23,29 @@
               <text class="card-source" wx:if="{{commentInfo.source}}">来自 {{commentInfo.source}}</text>
             </view>
           </view>
-          <view class="card-header-right" wx:else>
+          <!-- <view class="card-header-right" wx:else>
             <view class="card-nickName block-view"></view>
             <view class="card-shot-info">
               <text class="card-time  block-view"></text>
               <text class="card-source  block-view" ></text>
             </view>
-          </view>
+          </view> -->
           <!-- card 功能按钮 -->
           <view class="card-header-icon" wx:if="{{commentInfo.id && (commentInfo.isSelf || userInfo.isAdmin)}}">
             <i class="iconfont icon-unfold" bindtap="showCommentOptions"></i>
           </view>
+        </view>
+        <view class="block-card-header" wx:else>
+          <wux-skeleton active>
+            <wux-row>
+                <wux-col span="2">
+                    <wux-skeleton-avatar />
+                </wux-col>
+                <wux-col span="10">
+                    <wux-skeleton-paragraph />
+                </wux-col>
+            </wux-row>
+          </wux-skeleton>
         </view>
         <view class="card-body no-footer" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
           {{commentInfo.content}}
@@ -175,7 +187,7 @@
 
 
   <!-- 底部功能按钮 -->
-  <view class="footer-btn-group">
+  <view class="footer-btn-group" wx:if="{{commentInfo.id}}">
     <view class="footer-btn-item" data-popup-type="1" bindtap='switchEditPopup'>
       <i class="iconfont card-icon icon-interactive"></i>
       评论

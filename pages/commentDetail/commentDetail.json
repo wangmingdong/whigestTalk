@@ -23,6 +23,9 @@
     "wux-tab": "../../lib/wux/tab/index",
     "wux-switch": "../../lib/wux/switch/index",
     "wux-actionsheet": "../../lib/wux/actionsheet/index",
-    "wux-upload": "../../lib/wux/upload/index"
+    "wux-upload": "../../lib/wux/upload/index",
+    "wux-skeleton": "../../lib/wux/skeleton/index",
+    "wux-skeleton-avatar": "../../lib/wux/skeleton-avatar/index",
+    "wux-skeleton-paragraph": "../../lib/wux/skeleton-paragraph/index"
   }
 }

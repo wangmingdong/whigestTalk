@@ -151,6 +151,7 @@
               <view class="discuss-container" wx:key="{{index}}" wx:for="{{commentInfo.giveGoodUsers}}">
                 <view class="discuss-avatar-container">
                   <view class="discuss-avatar-main">
+                    <image class="discuss-avatar-icon" wx:if="{{item.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
                     <image class="discuss-avatar-img" src="{{item.avatarUrl}}"></image>
                   </view>
                 </view>

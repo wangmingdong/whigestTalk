@@ -411,6 +411,12 @@ Page({
         CommentSev.deleteComment(commentInfo.id).then(res => {
           if (res && res.data) {
             self.updateCommentData('delete', commentInfo)
+            $wuxToast().show({
+              type: 'success',
+              duration: 1500,
+              color: '#fff',
+              text: '删除成功！'
+            })
           }
           this.cancel()
         })
@@ -575,7 +581,10 @@ Page({
       this.setData({
         progress: 0,
       })
-      wx.showLoading()
+      wx.showLoading({
+        title: '上传中，请稍后',
+        mask: true
+      })
     } else if (file.status === 'done') {
       this.setData({
         imageUrl: file.url,

@@ -102,15 +102,31 @@ Page({
     })
     CommentSev.findCommentByCommentId(commentId).then(res => {
       console.log(res)
-      let commentInfo = res.data
-      commentInfo.fmtCreateTime = FormatUtil.getFullDate(commentInfo.createTime, '.')
-      if (commentInfo.source) {
-        commentInfo.source = commentInfo.source.split('<')[0].replace(/(^\s*)|(\s*$)/g, "")
+      if (res && res.data) {
+        let commentInfo = res.data
+        commentInfo.fmtCreateTime = FormatUtil.getFullDate(commentInfo.createTime, '.')
+        if (commentInfo.source) {
+          commentInfo.source = commentInfo.source.split('<')[0].replace(/(^\s*)|(\s*$)/g, "")
+        }
+        this.setData({
+          commentInfo: commentInfo
+        })
+        if (commentInfo.content) {
+          NavigationUtil.setNavigationBarTitle(commentInfo.content)
+        }
+        this.getDiscussList()
+      } else {
+        $wuxToast().show({
+          type: 'forbidden',
+          duration: 1500,
+          color: '#fff',
+          text: '该条说说不存在或者已删除'
+        })
+        this.setData({
+          share: true
+        })
       }
-      this.setData({
-        commentInfo: commentInfo
-      })
-      this.getDiscussList()
+      
     })
   },
 
@@ -156,6 +172,16 @@ Page({
       destructiveButtonClicked() {
         CommentSev.deleteComment(self.data.commentInfo.id).then(res => {
           if (res && res.data) {
+            $wuxToast().show({
+              type: 'success',
+              duration: 1500,
+              color: '#fff',
+              text: '删除成功！'
+            })
+            self.setData({
+              commentInfo: {},
+              share: true
+            })
             self.updateCommentData('delete')
             NavigationUtil.navigateBack('/pages/index/index');
           }
@@ -202,6 +228,12 @@ Page({
               discussTotal: self.data.discussTotal
             })
             // self.refreshAllData(self.data.commentInfo.id)
+            $wuxToast().show({
+              type: 'success',
+              duration: 1500,
+              color: '#fff',
+              text: '删除成功！'
+            })
             self.updateCommentData()
           }
           this.cancel()
@@ -668,7 +700,7 @@ Page({
 
   // 返回主页
   backToHome () {
-    NavigationUtil.reLaunch('/pages/index/index')
+    NavigationUtil.redirectTo('/pages/index/index')
   },
 
   /**

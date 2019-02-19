@@ -20,6 +20,7 @@ page{
   align-items: center;
   justify-content: space-between; */
   /* padding: 20rpx; */
+  /* padding-top: 20rpx; */
   box-sizing: border-box;
   font-size:34rpx;
 } 

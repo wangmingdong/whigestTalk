@@ -137,6 +137,9 @@ Page({
     StorageUtil.setStorageSync("commentList", []);
     let userInfo = StorageUtil.getStorageSync('userInfo')
     let self = this
+    this.setData({
+      spinning: true
+    })
     Auth.loginSys().then(res => {
       if (res) {
         StorageUtil.setStorageSync("sessionKey", res.session_key);
@@ -152,7 +155,8 @@ Page({
           app.globalData.userInfo = userInfo
           self.setData({
             userInfo: userInfo,
-            hasUserInfo: userInfo
+            hasUserInfo: userInfo,
+            spinning: false
           })
           console.log(userInfo)
           // 查询评论数据

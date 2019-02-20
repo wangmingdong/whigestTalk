@@ -4,7 +4,7 @@
             <block wx:for="{{ uploadFileList }}" wx:for-item="file" wx:key="uid">
                 <view class="{{ classes.file }} {{ file.status ? prefixCls + '__file--' + file.status : '' }}" data-file="{{ file }}" data-index="{{ index }}" bindtap="onPreview">
                     <video id="{{ file.uid }}" class="{{ classes.thumb }}" src="{{ file.url }}" wx:if="{{ isVideo }}" />
-                    <image class="{{ classes.thumb }}" src="{{ file.url }}" wx:else />
+                    <image class="{{ classes.thumb }}" mode="aspectFill" src="{{ file.url }}" wx:else />
                     <view class="{{ classes.remove }}" data-file="{{ file }}" data-index="{{ index }}" catchtap="onRemove" wx:if="{{ showRemoveIcon }}"></view>
                 </view>
             </block>

@@ -107,7 +107,7 @@
         </wux-cell-group>
         <!-- 图片上传 -->
         <view class="modal-upload-container" wx:if="{{showEditPopup}}">
-          <wux-upload listType="picture-card" controlled defaultFileList="{{ fileList }}" count="9" max="9" url="{{uploadUrl}}" bind:change="changeImgUpload" bind:success="imgUploadSuccess" bind:fail="imgUploadFail" bind:complete="imgUploadComplete"  bind:progress="imgUploadProgress" bind:preview="imgUploadPreview" bind:remove="imgUploadRemove">
+          <wux-upload listType="picture-card" defaultFileList="{{ fileList }}" count="9" max="9" url="{{uploadUrl}}" bind:change="changeImgUpload" bind:success="imgUploadSuccess" bind:fail="imgUploadFail" bind:complete="imgUploadComplete"  bind:progress="imgUploadProgress" bind:preview="imgUploadPreview" bind:remove="imgUploadRemove">
               <text>添加图片</text>
           </wux-upload>
         </view>

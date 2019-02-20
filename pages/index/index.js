@@ -167,6 +167,15 @@ Page({
     
   },
 
+  /**
+   * 生命周期函数--监听页面隐藏
+   */
+  onHide: function () {
+    this.setData({
+      showEditPopup: false
+    })
+  },
+
   // 查询用户信息
   findUserByOpenId: function (res, fn) {
     User.findUserByOpenId(res.openid).then(info => {

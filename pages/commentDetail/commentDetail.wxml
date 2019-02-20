@@ -225,7 +225,7 @@
         <wux-cell-group>
           <wux-cell hover-class="none">
           <textarea maxlength="180" class="native-textarea"  value="{{discussContent}}"
-            placeholder="发表你的看法" bindinput="changeEnterContent"/>
+            auto-focus="true" placeholder="发表你的看法" bindinput="changeEnterContent"/>
             <!-- <wux-textarea bind:change="changeEnterContent" hasCount rows="5" maxlength="180" cursorSpacing="80" controlled value="{{commentContent}}" placeholder="发表你的看法" /> -->
           </wux-cell>
           <view class="textarea-footer">

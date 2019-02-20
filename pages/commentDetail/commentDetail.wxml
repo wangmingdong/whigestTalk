@@ -48,7 +48,9 @@
           </wux-skeleton>
         </view>
         <view class="card-body no-footer" data-comment-info="{{commentInfo}}" bindtap='showCommentDetail'>
-          {{commentInfo.content}}
+          <view class="card-body-text">
+            {{commentInfo.content}}
+          </view>
           <view class="mt-20">
             <wux-row>
               <wux-col span="4" wx:for="{{commentInfo.images}}" wx:for-item="img" wx:key="{{index}}">
@@ -106,7 +108,7 @@
               暂无评论
             </view>
             <view wx:if="{{discussList.length}}">
-              <view class="discuss-container animated fadeInRight" wx:key="{{index}}" wx:for="{{discussList}}">
+              <view class="discuss-container animated fadeInLeft" wx:key="{{index}}" wx:for="{{discussList}}">
                 <view class="discuss-avatar-container">
                   <view class="discuss-avatar-main">
                     <image class="discuss-avatar-icon" wx:if="{{!item.isSecret && item.userInfo.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
@@ -160,7 +162,7 @@
             </view>
             
             <view wx:else="{{commentInfo.giveGoodUsers.length}}">
-              <view class="discuss-container" wx:key="{{index}}" wx:for="{{commentInfo.giveGoodUsers}}">
+              <view class="discuss-container animated fadeInRight" wx:key="{{index}}" wx:for="{{commentInfo.giveGoodUsers}}">
                 <view class="discuss-avatar-container">
                   <view class="discuss-avatar-main">
                     <image class="discuss-avatar-icon" wx:if="{{item.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
@@ -204,7 +206,7 @@
     </view>
   </view>
 
-  <view class-names="animated faster {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
+  <view wx:if="{{showEditPopup}}" class-names="animated faster {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
     <view class="page page-modal animated {{showEditPopup ? 'slideInUp':'slideOutDown'}}">
       <view class="page-modal-header">
         <view class="page-modal-container">

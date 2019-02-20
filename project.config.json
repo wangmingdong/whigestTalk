@@ -36,20 +36,27 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 2,
 			"list": [
 				{
 					"id": 0,
 					"name": "详情页",
 					"pathName": "pages/commentDetail/commentDetail",
 					"query": "id=63",
-					"scene": 1001
+					"scene": 1007
 				},
 				{
 					"id": -1,
 					"name": "删除评论详情页",
 					"pathName": "pages/commentDetail/commentDetail",
 					"query": "id=74",
+					"scene": null
+				},
+				{
+					"id": 2,
+					"name": "我的",
+					"pathName": "pages/me/me",
+					"query": "",
 					"scene": null
 				}
 			]

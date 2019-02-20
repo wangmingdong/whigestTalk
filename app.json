@@ -1,12 +1,30 @@
 {
-  "pages":[
+  "pages": [
     "pages/index/index",
-    "pages/commentDetail/commentDetail"
+    "pages/commentDetail/commentDetail",
+    "pages/me/me"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "智麦说",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "selectedColor": "#33cd5f",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "说说",
+        "iconPath": "./imgs/interactive.png",
+        "selectedIconPath": "./imgs/interactive_fill.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "./imgs/people.png",
+        "selectedIconPath": "./imgs/people_fill.png"
+      }
+    ]
   }
 }

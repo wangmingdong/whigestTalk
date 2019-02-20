@@ -173,8 +173,13 @@ Page({
       cancel() { },
       destructiveText: '删除',
       destructiveButtonClicked() {
+        wx.showLoading({
+          title: '请求中...',
+          mask: true
+        })
         CommentSev.deleteComment(self.data.commentInfo.id).then(res => {
           if (res && res.data) {
+            wx.hideLoading()
             $wuxToast().show({
               type: 'success',
               duration: 1500,
@@ -186,7 +191,9 @@ Page({
               share: true
             })
             self.updateCommentData('delete')
-            NavigationUtil.navigateBack('/pages/index/index');
+            setTimeout(() => {
+              NavigationUtil.navigateBack('/pages/index/index');
+            }, 1500)
           }
           this.cancel()
         })
@@ -703,7 +710,7 @@ Page({
 
   // 返回主页
   backToHome () {
-    NavigationUtil.redirectTo('/pages/index/index')
+    NavigationUtil.switchTab('/pages/index/index')
   },
 
   /**

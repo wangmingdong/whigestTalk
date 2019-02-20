@@ -1,0 +1,43 @@
+<!--pages/me/me.wxml-->
+<view class="container">
+  <view class="card-container">
+    <view class="card-header">
+      <view class="card-avatar-container">
+        <image class="avatar-icon" wx:if="{{userInfo.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
+        <image class="card-avatar-img" wx:if="{{userInfo.avatarUrl}}" src="{{userInfo.avatarUrl}}"></image>
+        <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
+      </view>
+      <view class="card-header-right">
+        <view class="card-nickName">{{userInfo.nickName}}</view>
+        <view class="card-shot-info">
+          <text class="card-time">管理员</text>
+          <!-- <text class="card-source" >来自 {{commentInfo.source}}</text> -->
+        </view>
+      </view>
+      <!-- card 功能按钮 -->
+      <view class="card-header-icon">
+        <i class="iconfont icon-setup" bindtap="showCommentOptions"></i>
+      </view>
+    </view>
+  </view>
+
+
+  <view class="card-container">
+    <wux-tabs wux-class="wux-tabs-header" controlled current="{{ currentIndex }}" bindchange="onChangeTabItem">
+      <block wx:for="{{ tabItem }}" wx:key="{{index}}">
+        <wux-tab key="{{ item.key }}" title="{{ item.title }}"></wux-tab>
+      </block>
+    </wux-tabs>
+    <swiper current="{{ currentIndex }}" bindchange="onSwiperChange">
+      <block wx:for="{{ tabItem }}" wx:key="{{index}}">
+        <swiper-item>
+          <view class="swiper-content">
+            <view wx:for="{{item.content}}" wx:for-item="list" wx:key="{{index}}">
+              {{list}}
+            </view>
+          </view>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+</view>

@@ -413,8 +413,13 @@ Page({
       cancel() { },
       destructiveText: '删除',
       destructiveButtonClicked() {
+        wx.showLoading({
+          title: '请求中...',
+          mask: true
+        })
         CommentSev.deleteComment(commentInfo.id).then(res => {
           if (res && res.data) {
+            wx.hideLoading()
             self.updateCommentData('delete', commentInfo)
             $wuxToast().show({
               type: 'success',

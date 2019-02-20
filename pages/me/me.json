@@ -1,0 +1,30 @@
+{
+  "navigationBarTitleText": "智麦说",
+  "usingComponents": {
+    "wux-row": "../../lib/wux/row/index",
+    "wux-col": "../../lib/wux/col/index",
+    "wux-image": "../../lib/wux/image/index",
+    "wux-cell-group": "../../lib/wux/cell-group/index",
+    "wux-cell": "../../lib/wux/cell/index",
+    "wux-button": "../../lib/wux/button/index",
+    "wux-popup": "../../lib/wux/popup/index",
+    "wux-toptips": "../../lib/wux/toptips/index",
+    "wux-toast": "../../lib/wux/toast/index",
+    "wux-icon": "../../lib/wux/icon/index",
+    "wux-spin": "../../lib/wux/spin/index",
+    "wux-dialog": "../../lib/wux/dialog/index",
+    "i-load-more": "../../lib/load-more/index",
+    "wux-refresher": "../../lib/wux/refresher/index",
+    "wux-floating-button": "../../lib/wux/floating-button/index",
+    "wux-card": "../../lib/wux/card/index",
+    "wux-textarea": "../../lib/wux/textarea/index",
+    "wux-tabs": "../../lib/wux/tabs/index",
+    "wux-tab": "../../lib/wux/tab/index",
+    "wux-switch": "../../lib/wux/switch/index",
+    "wux-actionsheet": "../../lib/wux/actionsheet/index",
+    "wux-upload": "../../lib/wux/upload/index",
+    "wux-skeleton": "../../lib/wux/skeleton/index",
+    "wux-skeleton-avatar": "../../lib/wux/skeleton-avatar/index",
+    "wux-skeleton-paragraph": "../../lib/wux/skeleton-paragraph/index"
+  }
+}

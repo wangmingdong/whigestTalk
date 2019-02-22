@@ -1,4 +1,7 @@
 <!--pages/me/me.wxml-->
+<wux-gallery id="wux-gallery" />
+<wux-actionsheet id="wux-actionsheet" />
+<wux-toast id="wux-toast" />
 <view class="container">
   <view class="card-container">
     <view class="card-header">
@@ -21,23 +24,105 @@
     </view>
   </view>
 
-
-  <view class="card-container">
-    <wux-tabs wux-class="wux-tabs-header" controlled current="{{ currentIndex }}" bindchange="onChangeTabItem">
+  <view class="card-container no-border">
+    <wux-tabs wux-class="card-tabs-header" controlled current="{{ currentIndex }}" bindchange="onChangeTabItem">
       <block wx:for="{{ tabItem }}" wx:key="{{index}}">
         <wux-tab key="{{ item.key }}" title="{{ item.title }}"></wux-tab>
       </block>
     </wux-tabs>
-    <swiper current="{{ currentIndex }}" bindchange="onSwiperChange">
-      <block wx:for="{{ tabItem }}" wx:key="{{index}}">
-        <swiper-item>
-          <view class="swiper-content">
-            <view wx:for="{{item.content}}" wx:for-item="list" wx:key="{{index}}">
-              {{list}}
+    <view class="card-tabs-body">
+      <!-- 说说 -->
+      <view class="card-tabs-content animated fadeInLeft"
+       wx:if="{{currentIndex == 0}}">
+       <scroll-view scroll-y='true' enable-back-to-top bindscrolltolower='loadRankMore'>
+          <view class="card-container" wx:key="{{index}}" wx:for="{{tabItem[currentIndex].list}}">
+            <view class="card-header">
+              <view class="card-avatar-container">
+                <!-- <image wx:if="{{item.userInfo.isAdmin}}" class="avatar-border" src="./../../imgs/avatarBorder.png"></image> -->
+                <image class="avatar-icon" wx:if="{{!item.isSecret && item.userInfo.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
+                <!-- <view class="avatar-icon v-icon"></view> -->
+                <image class="card-avatar-img" wx:if="{{item.userInfo.avatarUrl && !item.isSecret}}" src="{{item.userInfo.avatarUrl}}"></image>
+                <image class="card-avatar-img" wx:elif="{{item.mockAvatar}}" src="{{item.mockAvatar}}"></image>
+                <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
+              </view>
+              <view class="card-header-right">
+                <view class="card-nickName" wx:if="{{item.userInfo.nickName && !item.isSecret}}">{{item.userInfo.nickName}}</view>
+                <view class="card-nickName" wx:else>{{item.mockName}}</view>
+                <view class="card-shot-info">
+                  <text class="card-time">{{item.fmtCreateTime}}</text>
+                  <text class="card-source" wx:if="{{item.source}}">来自 {{item.source}}</text>
+                </view>
+              </view>
+              <!-- card 功能按钮 -->
+              <view class="card-header-icon" wx:if="{{item.isSelf || userInfo.isAdmin}}">
+                <i class="iconfont icon-unfold" data-comment-info="{{item}}" bindtap="showCommentOptions"></i>
+              </view>
+            </view>
+            <view class="card-body" data-comment-info="{{item}}" bindtap='showCommentDetail'>
+              <view class="card-body-text">
+                {{item.content}}
+              </view>
+              <view class="mt-20">
+                <wux-row>
+                  <wux-col span="4" wx:for="{{item.images}}" wx:for-item="img" wx:key="{{index}}">
+                    <view class="card-img-list" data-img-url="{{img}}" data-img-list="{{item.images}}" catchtap="previewImgs">
+                      <image class="card-img" mode="aspectFill" lazy-load="true" src="{{img}}"></image>
+                    </view>
+                      <!-- <wux-image wux-class="card-wux-img" shape="rounded" src="{{item}}">
+                          <image src="https://loading.io/spinners/spinner/index.ajax-spinner-preloader.svg" slot="loading" />
+                      </wux-image> -->
+                  </wux-col>
+                </wux-row>
+              </view>
+            </view>
+            <view class="card-fooder">
+              <view class="card-fooder-total discuss" data-comment-info="{{item}}" bindtap='showCommentDetail'>
+                <!-- <wux-icon size="16" type="ios-chatboxes"/> -->
+                <i class="iconfont card-icon icon-interactive"></i>
+                <view class="card-fooder-total-text">
+                  {{item.discussCount}}
+                </view>
+              </view>
+              <view class="card-fooder-total good">
+                <button wx:if="{{!userInfo.id}}" class="hidden-info-btn" open-type='getUserInfo' bind:getuserinfo="giveGoodForPermisson" data-comment-id="{{item.id}}"></button>
+                <button wx:else class="hidden-info-btn" data-comment-id="{{item.id}}" bindtap='giveGoodAction'></button>
+                <i class="iconfont card-icon icon-praise {{item.usedGood ? 'color-error' : ''}}"></i>
+                <view class="card-fooder-total-text {{item.usedGood ? 'color-error' : ''}}">
+                  {{item.goodNum}}
+                </view>
+              </view>
             </view>
           </view>
-        </swiper-item>
-      </block>
-    </swiper>
+          <view wx:if="{{tabItem[currentIndex].spinning}}">
+            <i-load-more custom-class="white-color" tip="{{tabItem[currentIndex].loadMoreText}}" loading="{{ tabItem[currentIndex].spinning }}" />
+          </view>
+
+          <view class="footer-load-more" wx:if="{{currentIndex == 0 && tabItem[currentIndex].list.length && !tabItem[currentIndex].spinning}}" bindtap='loadRankMore'>
+            {{tabItem[currentIndex].isNoMore ? '没有更多了': '点击加载更多'}}
+          </view>
+        </scroll-view>
+       
+       </view>
+      <!-- 相册 -->
+      <view class="card-tabs-content animated fadeInRight" wx:if="{{currentIndex == 1}}">
+        <wux-row>
+          <wux-col span="4" wx:for="{{tabItem[currentIndex].list}}" wx:for-item="item" wx:key="{{index}}">
+            <view class="card-img-list" data-img-url="{{item.img}}" catchtap="previewImgs">
+              <image class="card-img" mode="aspectFill" lazy-load="true" src="{{item.img}}"></image>
+            </view>
+              <!-- <wux-image wux-class="card-wux-img" shape="rounded" src="{{item}}">
+                  <image src="https://loading.io/spinners/spinner/index.ajax-spinner-preloader.svg" slot="loading" />
+              </wux-image> -->
+          </wux-col>
+        </wux-row>
+        <view wx:if="{{tabItem[currentIndex].spinning}}">
+          <i-load-more custom-class="white-color" tip="{{tabItem[currentIndex].loadMoreText}}" loading="{{ tabItem[currentIndex].spinning }}" />
+        </view>
+
+        <view class="footer-load-more" wx:if="{{currentIndex == 1 && tabItem[currentIndex].list.length && !tabItem[currentIndex].spinning}}" bindtap='loadRankMore'>
+          {{tabItem[currentIndex].isNoMore ? '没有更多了': '点击加载更多'}}
+        </view>
+      </view>
+    </view>
   </view>
 </view>

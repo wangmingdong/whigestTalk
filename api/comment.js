@@ -46,4 +46,11 @@ export default class CommentSev {
     return Net.getJSON(Config.SERVER.url.root + "/comments/deleteComment", { commentId: id });
   }
 
+  /**
+  * 查询图片列表
+  */
+  static queryTargetImages(data) {
+    return Net.postJSON(Config.SERVER.url.root + "/comments/queryTargetImages", {}, data);
+  }
+
 }

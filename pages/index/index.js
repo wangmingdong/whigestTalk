@@ -76,31 +76,40 @@ Page({
     }
   },
 
-  //  更新缓存中说说状态
-  updateCommentData: function (type = 'update', comment) {
-    let commentList = StorageUtil.getStorageSync('commentList')
-    let newCommentList = []
-    if (commentList.length) {
+  // 更新或者删除说说
+  updateCommentForEach: function (type, oldList, commentObj) {
+    let newList = []
+    if (oldList.length) {
       if (type == 'update') {
-        newCommentList = commentList.map((v, i) => {
-          if (v.id == comment.id) {
-            return v = comment
+        newList = oldList.map((v, i) => {
+          if (v.id == commentObj.id) {
+            return v = commentObj
           } else {
             return v
           }
         })
       } else if (type == 'delete') {
-        for (let i = 0; i < commentList.length; i++) {
-          if (commentList[i].id == comment.id) {
-            commentList.splice(i, 1)
+        for (let i = 0; i < oldList.length; i++) {
+          if (oldList[i].id == commentObj.id) {
+            oldList.splice(i, 1)
             i--
             break
           }
         }
-        newCommentList = commentList
+        newList = oldList
       }
     }
+    return newList
+  },
+
+  //  更新缓存中说说状态
+  updateCommentData: function (type = 'update', comment) {
+    let myCommentList = StorageUtil.getStorageSync('myCommentList')
+    let commentList = StorageUtil.getStorageSync('commentList')
+    let newMyCommentList = this.updateCommentForEach(type, myCommentList, comment)
+    let newCommentList = this.updateCommentForEach(type, commentList, comment)
     StorageUtil.setStorageSync('commentList', newCommentList)
+    StorageUtil.setStorageSync('myCommentList', newMyCommentList)
     this.setData({
       commentList: newCommentList
     })
@@ -459,6 +468,7 @@ Page({
       openid: this.data.userInfo.openid,
       commentId: e.target.dataset.commentId
     }
+    let self = this
     console.log(param)
     CommentSev.giveGood(param).then(res => {
       console.log(res)
@@ -474,6 +484,7 @@ Page({
               v.goodNum--
               v.usedGood = false
             }
+            self.updateCommentData('update', v)
           }
         })
         this.setData({

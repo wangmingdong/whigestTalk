@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "智麦说",
+  "navigationBarTitleText": "我的",
   "usingComponents": {
     "wux-row": "../../lib/wux/row/index",
     "wux-col": "../../lib/wux/col/index",
@@ -25,6 +25,7 @@
     "wux-upload": "../../lib/wux/upload/index",
     "wux-skeleton": "../../lib/wux/skeleton/index",
     "wux-skeleton-avatar": "../../lib/wux/skeleton-avatar/index",
-    "wux-skeleton-paragraph": "../../lib/wux/skeleton-paragraph/index"
+    "wux-skeleton-paragraph": "../../lib/wux/skeleton-paragraph/index",
+    "wux-gallery": "../../lib/wux/gallery/index"
   }
 }

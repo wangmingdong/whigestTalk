@@ -12,7 +12,7 @@
         <view class="card-header">
           <view class="card-avatar-container">
             <!-- <image wx:if="{{item.userInfo.isAdmin}}" class="avatar-border" src="./../../imgs/avatarBorder.png"></image> -->
-            <image class="avatar-icon" wx:if="{{!item.isSecret && item.userInfo.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
+            <image class="avatar-icon" wx:if="{{!item.isSecret && item.userInfo.isAdmin == 1}}" src="http://static.weqianduan.com/v-icon.png"></image>
             <!-- <view class="avatar-icon v-icon"></view> -->
             <image class="card-avatar-img" wx:if="{{item.userInfo.avatarUrl && !item.isSecret}}" src="{{item.userInfo.avatarUrl}}"></image>
             <image class="card-avatar-img" wx:elif="{{item.mockAvatar}}" src="{{item.mockAvatar}}"></image>
@@ -27,8 +27,8 @@
             </view>
           </view>
           <!-- card 功能按钮 -->
-          <view class="card-header-icon" wx:if="{{item.isSelf || userInfo.isAdmin}}">
-            <i class="iconfont icon-unfold" data-comment-info="{{item}}" bindtap="showCommentOptions"></i>
+          <view class="card-header-icon" wx:if="{{item.isSelf || userInfo.isAdmin == 1}}">
+            <i class="iconfont icon-more" data-comment-info="{{item}}" bindtap="showCommentOptions"></i>
           </view>
         </view>
         <view class="card-body" data-comment-info="{{item}}" bindtap='showCommentDetail'>

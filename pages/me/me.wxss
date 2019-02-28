@@ -1,1 +1,7 @@
 /* pages/me/me.wxss */
+.i-modal-form-input{
+  margin:10rpx 50rpx;
+  padding:10rpx;
+  border:1px solid #eee;
+  border-radius:10rpx;
+}

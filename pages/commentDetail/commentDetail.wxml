@@ -7,7 +7,7 @@
       <view class="card-container">
         <view class="card-header" wx:if="{{commentInfo.id}}">
           <view class="card-avatar-container">
-            <image class="avatar-icon" wx:if="{{!commentInfo.isSecret && commentInfo.userInfo.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
+            <image class="avatar-icon" wx:if="{{!commentInfo.isSecret && (commentInfo.userInfo.isAdmin == 1)}}" src="http://static.weqianduan.com/v-icon.png"></image>
             <image class="card-avatar-img" wx:if="{{commentInfo.userInfo.avatarUrl && !commentInfo.isSecret}}" src="{{commentInfo.userInfo.avatarUrl}}"></image>
             <image class="card-avatar-img" wx:elif="{{commentInfo.mockAvatar}}" src="{{commentInfo.mockAvatar}}"></image>
             <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
@@ -31,8 +31,8 @@
             </view>
           </view> -->
           <!-- card 功能按钮 -->
-          <view class="card-header-icon" wx:if="{{commentInfo.id && (commentInfo.isSelf || userInfo.isAdmin)}}">
-            <i class="iconfont icon-unfold" bindtap="showCommentOptions"></i>
+          <view class="card-header-icon" wx:if="{{commentInfo.id && (commentInfo.isSelf || userInfo.isAdmin == 1)}}">
+            <i class="iconfont icon-more" bindtap="showCommentOptions"></i>
           </view>
         </view>
         <view class="block-card-header" wx:else>
@@ -111,7 +111,7 @@
               <view class="discuss-container animated fadeInLeft" wx:key="{{index}}" wx:for="{{discussList}}">
                 <view class="discuss-avatar-container">
                   <view class="discuss-avatar-main">
-                    <image class="discuss-avatar-icon" wx:if="{{!item.isSecret && item.userInfo.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
+                    <image class="discuss-avatar-icon" wx:if="{{!item.isSecret && item.userInfo.isAdmin == 1}}" src="http://static.weqianduan.com/v-icon.png"></image>
                     <image class="discuss-avatar-img" wx:if="{{item.userInfo.avatarUrl && !item.isSecret}}" src="{{item.userInfo.avatarUrl}}"></image>
                     <image class="discuss-avatar-img" wx:elif="{{item.mockAvatar}}" src="{{item.mockAvatar}}"></image>
                     <image class="discuss-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
@@ -123,8 +123,8 @@
                     <view class="card-nickName full-width" wx:if="{{item.userInfo.nickName && !item.isSecret}}">{{item.userInfo.nickName}}</view>
                     <view class="card-nickName full-width" wx:else>{{item.mockName}}</view>
                     <!-- card 功能按钮 -->
-                    <view class="card-header-icon discuss-header-icon" wx:if="{{item.isSelf || userInfo.isAdmin}}">
-                      <i class="iconfont icon-unfold" data-discuss-info="{{item}}" bindtap="showDiscussOptions"></i>
+                    <view class="card-header-icon discuss-header-icon" wx:if="{{item.isSelf || userInfo.isAdmin == 1}}">
+                      <i class="iconfont icon-more" data-discuss-info="{{item}}" bindtap="showDiscussOptions"></i>
                     </view>
                   </view>
                   <!-- 评论详情 -->
@@ -165,7 +165,7 @@
               <view class="discuss-container animated fadeInRight" wx:key="{{index}}" wx:for="{{commentInfo.giveGoodUsers}}">
                 <view class="discuss-avatar-container">
                   <view class="discuss-avatar-main">
-                    <image class="discuss-avatar-icon" wx:if="{{item.isAdmin}}" src="http://static.weqianduan.com/v-icon.png"></image>
+                    <image class="discuss-avatar-icon" wx:if="{{item.isAdmin == 1}}" src="http://static.weqianduan.com/v-icon.png"></image>
                     <image class="discuss-avatar-img" src="{{item.avatarUrl}}"></image>
                   </view>
                 </view>

@@ -61,6 +61,22 @@ export default class UserSev {
   static findUserByOpenId(openid) {
     return Net.getJSON(Config.SERVER.url.root + "/users/findUserByOpenId", {openid: openid});
   }
+
+  /**
+  * 修改用户
+  */
+  static updateUserData(data) {
+    return Net.postJSON(Config.SERVER.url.root + "/users/updateUser", {}, data);
+  }
+
+  /**
+  * 修改用户昵称
+  */
+  static updateUserName(data) {
+    return Net.postJSON(Config.SERVER.url.root + "/users/updateUserName", {}, data);
+  }
+
+
   
 
 

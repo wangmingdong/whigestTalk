@@ -113,8 +113,15 @@ page{
 
 .card-avatar-container{
   display: flex;
+  width: 80rpx;
+  position: relative;
+}
+
+.card-avatar-container.lg-avatar-container{
+  display: flex;
   width: 100rpx;
   position: relative;
+  align-items:center;
 }
 
 .avatar-diamond{
@@ -128,12 +135,23 @@ page{
 .avatar-icon{
   position:absolute;
   /* background-image: url(http://static.weqianduan.com/icon-x2.png); */
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  box-shadow: 0 0 4rpx rgba(0,0,0,0.3);
+  vertical-align: -2px;
+  bottom: 6rpx;
+  right:-3rpx;
+}
+
+.lg-avatar-container .avatar-icon{
+  position:absolute;
   width: 40rpx;
   height: 40rpx;
   border-radius: 50%;
   box-shadow: 0 0 4rpx rgba(0,0,0,0.3);
   vertical-align: -2px;
-  bottom:-3rpx;
+  bottom: -3rpx;
   right:-3rpx;
 }
 
@@ -149,9 +167,16 @@ page{
   left:-30rpx;
 }
 
-.card-avatar-img{
+.lg-avatar-container .card-avatar-img{
   width:90rpx;
   height:90rpx;
+  border-radius:50%;
+  background-color:#f9f9f9;
+}
+
+.card-avatar-img{
+  width:70rpx;
+  height:70rpx;
   border-radius:50%;
   background-color:#f9f9f9;
 }
@@ -161,6 +186,14 @@ page{
   flex-direction: column;
   width: 100%;
   padding-left: 30rpx;
+}
+
+.card-nickName {
+  font-size: 30rpx;
+}
+
+.lg-header-right .card-nickName {
+  font-size: 36rpx;
 }
 
 .card-shot-info{
@@ -519,4 +552,14 @@ page{
   align-items:center;
   justify-content:center;
   font-size:30rpx;
+}
+
+.open-data-avatar-container{
+  overflow: hidden;
+}
+
+.open-data-avatar{
+  width:90rpx;
+  height:90rpx;
+  border-radius:50%;
 }

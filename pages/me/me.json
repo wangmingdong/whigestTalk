@@ -26,6 +26,7 @@
     "wux-skeleton": "../../lib/wux/skeleton/index",
     "wux-skeleton-avatar": "../../lib/wux/skeleton-avatar/index",
     "wux-skeleton-paragraph": "../../lib/wux/skeleton-paragraph/index",
-    "wux-gallery": "../../lib/wux/gallery/index"
+    "wux-gallery": "../../lib/wux/gallery/index",
+    "i-modal": "../../lib/iview/modal/index"
   }
 }

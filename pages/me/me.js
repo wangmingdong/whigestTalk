@@ -7,7 +7,7 @@ import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
 import Config from "./../../config";
-import { $stopWuxRefresher, $wuxActionSheet, $wuxToast } from '../../lib/wux/index'
+import { $stopWuxRefresher, $wuxActionSheet, $wuxToast, $wuxGallery, $wuxDialog } from '../../lib/wux/index'
 
 //获取应用实例
 const app = getApp()
@@ -51,6 +51,21 @@ Page({
       pageSize: 10,
       rankPageNum: [],
     }],
+    identityObj: {
+      0: '普通会员',
+      1: '掌柜',
+      2: '金卡会员'
+    },
+    editUserInfoModal: false,
+    editUserInfoModalBtns: [
+      {
+        name: '取消'
+      },
+      {
+        name: '确定'
+      }
+    ],
+    newNickName: '' // 修改后昵称
   },
 
   /**
@@ -69,7 +84,10 @@ Page({
       if (res) {
         StorageUtil.setStorageSync("sessionKey", res.session_key);
         StorageUtil.setStorageSync("openid", res.openid);
-        self.findUserByOpenId(res, () => {
+        self.findUserByOpenId(res, (result) => {
+          if ((!userInfo || !userInfo.id) && result) {
+            userInfo = result
+          }
           app.globalData.userInfo = userInfo
 
           self.data.tabItem[self.data.currentIndex].spinning = false
@@ -85,6 +103,58 @@ Page({
       }
     })
 
+  },
+
+  getUserInfo: function(e, fn) {
+    console.log(e)
+    let userInfo = {
+      nickName: ''
+    };
+    let hasUserInfo = false;
+    if (e.detail.errMsg.indexOf('getUserInfo:fail') > -1) {
+      userInfo = e.detail.userInfo
+      hasUserInfo = true;
+
+      if (fn) {
+        fn(false)
+      }
+      return
+    }
+    this.setData({
+      publishLoading: true
+    })
+    // 先查询用户信息是否存在
+    this.queryLogin((res) => {
+      // 如果用户存在，执行回调
+      if (res.id) {
+        if (fn) {
+          this.setData({
+            publishLoading: false
+          })
+          fn(true)
+        }
+      } else {
+        // 如果没有则新增
+        let userData = Object.assign(e.detail, res)
+        console.log(userData)
+        User.addUserData(userData).then(result => {
+          console.log(result)
+          app.globalData.userInfo = result.data
+          this.setData({
+            userInfo: result.data,
+            hasUserInfo: result.data,
+            publishLoading: false
+          })
+          StorageUtil.setStorageSync("userInfo", result.data);
+          if (fn) {
+            this.setData({
+              publishLoading: false
+            })
+            fn(true)
+          }
+        })
+      }
+    })
   },
 
   /**
@@ -166,7 +236,7 @@ Page({
       this.setData({
         tabItem: this.data.tabItem
       })
-      if (this.data.currentIndex) {
+      if (this.data.currentIndex == 1) {
         this.getImageList()
       } else {
         this.getCommentList()
@@ -174,23 +244,40 @@ Page({
     }
   },
 
+  onRefresh() {
+    this.data.tabItem[this.data.currentIndex].pageNum = 1
+    this.data.tabItem[this.data.currentIndex].pageSize = 10
+    this.data.tabItem[this.data.currentIndex].isNoMore = false
+    this.data.tabItem[this.data.currentIndex].list = []
+    
+    this.setData({
+      tabItem: this.data.tabItem
+    })
+    if (this.data.currentIndex == 1) {
+      this.getImageList()
+    } else {
+      this.getCommentList()
+    }
+  },
+
   // 查询评论列表
   getCommentList: function () {
-    let currentTabItem = this.data.tabItem[this.data.currentIndex]
+    let currentIndex = this.data.currentIndex
+    let currentTabItem = this.data.tabItem[currentIndex]
     let param = {
       pageNum: currentTabItem.pageNum,
       pageSize: currentTabItem.pageSize,
       targetId: this.data.userInfo.openid
     }
-    currentTabItem.rankPageNum.push(this.data.tabItem[this.data.currentIndex].pageNum)
-    this.data.tabItem[this.data.currentIndex].spinning = true
-    this.data.tabItem[this.data.currentIndex].loadMoreText = '请稍后...'
-    this.data.tabItem[this.data.currentIndex].imgPageNum = this.data.imgPageNum
+    currentTabItem.rankPageNum.push(this.data.tabItem[currentIndex].pageNum)
+    this.data.tabItem[currentIndex].spinning = true
+    this.data.tabItem[currentIndex].loadMoreText = '请稍后...'
+    this.data.tabItem[currentIndex].imgPageNum = this.data.imgPageNum
     this.setData({
       tabItem: this.data.tabItem
     })
     CommentSev.getCommentList(param).then(res => {
-      // $stopWuxRefresher()
+      $stopWuxRefresher()
       if (res && res.data && res.data.rows && res.data.rows.length) {
         if (res.data.rows.length) {
           let resultData = res.data.rows
@@ -200,52 +287,53 @@ Page({
           // 如果返回的个数小于pageSize
           if (resultData.length < currentTabItem.pageSize) {
             loadMoreText = '我是有底线的'
-            this.data.tabItem[this.data.currentIndex].loadMoreText = loadMoreText
-            this.data.tabItem[this.data.currentIndex].isNoMore = true
+            this.data.tabItem[currentIndex].loadMoreText = loadMoreText
+            this.data.tabItem[currentIndex].isNoMore = true
           }
-          this.data.tabItem[this.data.currentIndex].list = currentTabItem.list.concat(resultData)
-          this.data.tabItem[this.data.currentIndex].spinning = false
-          this.data.tabItem[this.data.currentIndex].loadMoreText = loadMoreText
+          this.data.tabItem[currentIndex].list = currentTabItem.list.concat(resultData)
+          this.data.tabItem[currentIndex].spinning = false
+          this.data.tabItem[currentIndex].loadMoreText = loadMoreText
           this.setData({
             tabItem: this.data.tabItem
           })
         } else {
-          this.data.tabItem[this.data.currentIndex].isNoMore = true
-          this.data.tabItem[this.data.currentIndex].spinning = false
-          this.data.tabItem[this.data.currentIndex].loadMoreText = '我是有底线的'
+          this.data.tabItem[currentIndex].isNoMore = true
+          this.data.tabItem[currentIndex].spinning = false
+          this.data.tabItem[currentIndex].loadMoreText = '我是有底线的'
           this.setData({
             tabItem: this.data.tabItem
           })
         }
       } else {
-        this.data.tabItem[this.data.currentIndex].isNoMore = true
-        this.data.tabItem[this.data.currentIndex].spinning = false
-        this.data.tabItem[this.data.currentIndex].loadMoreText = '我是有底线的'
+        this.data.tabItem[currentIndex].isNoMore = true
+        this.data.tabItem[currentIndex].spinning = false
+        this.data.tabItem[currentIndex].loadMoreText = '我是有底线的'
         this.setData({
           tabItem: this.data.tabItem
         })
       }
-      StorageUtil.setStorageSync("myCommentList", this.data.tabItem[this.data.currentIndex].list);
+      StorageUtil.setStorageSync("myCommentList", this.data.tabItem[currentIndex].list);
     })
   },
 
   // 查询图片列表
   getImageList: function () {
-    let currentTabItem = this.data.tabItem[this.data.currentIndex]
+    let currentIndex = this.data.currentIndex
+    let currentTabItem = this.data.tabItem[currentIndex]
     let param = {
       pageNum: currentTabItem.pageNum,
       pageSize: currentTabItem.pageSize,
       targetId: this.data.userInfo.openid
     }
-    currentTabItem.rankPageNum.push(this.data.tabItem[this.data.currentIndex].pageNum)
-    this.data.tabItem[this.data.currentIndex].spinning = true
-    this.data.tabItem[this.data.currentIndex].loadMoreText = '请稍后...'
-    this.data.tabItem[this.data.currentIndex].imgPageNum = this.data.imgPageNum
+    currentTabItem.rankPageNum.push(this.data.tabItem[currentIndex].pageNum)
+    this.data.tabItem[currentIndex].spinning = true
+    this.data.tabItem[currentIndex].loadMoreText = '请稍后...'
+    this.data.tabItem[currentIndex].imgPageNum = this.data.imgPageNum
     this.setData({
       tabItem: this.data.tabItem
     })
     CommentSev.queryTargetImages(param).then(res => {
-      // $stopWuxRefresher()
+      $stopWuxRefresher()
       if (res && res.data && res.data.rows && res.data.rows.length) {
         if (res.data.rows.length) {
           let resultData = res.data.rows
@@ -253,32 +341,32 @@ Page({
           // 如果返回的个数小于pageSize
           if (resultData.length < currentTabItem.pageSize) {
             loadMoreText = '我是有底线的'
-            this.data.tabItem[this.data.currentIndex].loadMoreText = loadMoreText
-            this.data.tabItem[this.data.currentIndex].isNoMore = true
+            this.data.tabItem[currentIndex].loadMoreText = loadMoreText
+            this.data.tabItem[currentIndex].isNoMore = true
           }
-          this.data.tabItem[this.data.currentIndex].list = currentTabItem.list.concat(resultData)
-          this.data.tabItem[this.data.currentIndex].spinning = false
-          this.data.tabItem[this.data.currentIndex].loadMoreText = loadMoreText
+          this.data.tabItem[currentIndex].list = currentTabItem.list.concat(resultData)
+          this.data.tabItem[currentIndex].spinning = false
+          this.data.tabItem[currentIndex].loadMoreText = loadMoreText
           this.setData({
             tabItem: this.data.tabItem
           })
         } else {
-          this.data.tabItem[this.data.currentIndex].isNoMore = true
-          this.data.tabItem[this.data.currentIndex].spinning = false
-          this.data.tabItem[this.data.currentIndex].loadMoreText = '我是有底线的'
+          this.data.tabItem[currentIndex].isNoMore = true
+          this.data.tabItem[currentIndex].spinning = false
+          this.data.tabItem[currentIndex].loadMoreText = '我是有底线的'
           this.setData({
             tabItem: this.data.tabItem
           })
         }
       } else {
-        this.data.tabItem[this.data.currentIndex].isNoMore = true
-        this.data.tabItem[this.data.currentIndex].spinning = false
-        this.data.tabItem[this.data.currentIndex].loadMoreText = '我是有底线的'
+        this.data.tabItem[currentIndex].isNoMore = true
+        this.data.tabItem[currentIndex].spinning = false
+        this.data.tabItem[currentIndex].loadMoreText = '我是有底线的'
         this.setData({
           tabItem: this.data.tabItem
         })
       }
-      StorageUtil.setStorageSync("myImageList", this.data.tabItem[this.data.currentIndex].list);
+      StorageUtil.setStorageSync("myImageList", this.data.tabItem[currentIndex].list);
     })
   },
 
@@ -286,15 +374,34 @@ Page({
   previewImgs: function (e) {
     let currentTabItem = this.data.tabItem[this.data.currentIndex]
     let imgUrl = e.currentTarget.dataset.imgUrl
-    let imgList = e.currentTarget.dataset.imgList
     let urls = []
-    currentTabItem.list.forEach((v, i) => {
-      urls.push(v.img)
-    })
-    wx.previewImage({
-      current: imgUrl,
-      urls: urls
-    })
+    if (this.data.currentIndex == 1) {
+      currentTabItem.list.forEach((v, i) => {
+        urls.push(v.img)
+      })
+      // wx.previewImage({
+      //   current: imgUrl,
+      //   urls: urls
+      // })
+      let current = urls.indexOf(imgUrl)
+      $wuxGallery().show({
+        current,
+        urls: currentTabItem.list.map((n) => ({ image: n.img, remark: n.content })),
+        showDelete: false,
+        indicatorDots: false,
+        indicatorColor: '#fff',
+        duration: '300',
+        classNames: 'wux-animate--fadeIn',
+        indicatorActiveColor: '#04BE02'
+      })
+    } else {
+      let imgList = e.currentTarget.dataset.imgList
+      wx.previewImage({
+        current: imgUrl,
+        urls: imgList
+      })
+    }
+    
   },
 
   // 弹出/收回说说功能按钮
@@ -329,6 +436,88 @@ Page({
           this.cancel()
         })
       },
+    })
+  },
+
+  // 用户信息功能按钮
+  showUserOptions: function () {
+    this.setData({
+      editUserInfoModal: true,
+      newNickName: this.data.userInfo.nickName
+    })
+  },
+
+  // 修改昵称弹窗的按钮点击
+  editUserInfoBtn: function (e) {
+    console.log(e)
+    let { detail } = e
+    let self = this
+    let btnIndex = detail.index
+    if (btnIndex) {
+      // yes
+      let newNickName = this.data.newNickName
+      if (newNickName && newNickName.length) {
+        this.data.editUserInfoModalBtns[1].loading = true
+        this.setData({
+          editUserInfoModalBtns: this.data.editUserInfoModalBtns
+        })
+        User.updateUserName({ nickName: newNickName }).then(res => {
+          self.data.editUserInfoModalBtns[1].loading = false
+          self.setData({
+            editUserInfoModalBtns: self.data.editUserInfoModalBtns
+          })
+          if (res && res.data) {
+            // 修改成功
+            if (res.data.suc) {
+              $wuxToast().show({
+                type: 'success',
+                duration: 1500,
+                color: '#fff',
+                text: '修改成功！'
+              })
+              let userInfo = res.data.userInfo
+              app.globalData.userInfo = userInfo
+
+              self.data.tabItem[0].spinning = false
+              self.data.tabItem[0].list = []
+              self.data.tabItem[0].pageNum = 1
+              self.data.tabItem[0].pageSize = 10
+              self.setData({
+                userInfo: userInfo,
+                hasUserInfo: userInfo,
+                tabItem: self.data.tabItem,
+                editUserInfoModal: false
+              })
+              StorageUtil.setStorageSync("userInfo", userInfo);
+              console.log(userInfo)
+              // 查询评论数据
+              self.getCommentList()
+            } else {
+              // 修改失败
+              $wuxToast().show({
+                type: 'error',
+                duration: 1500,
+                color: '#fff',
+                text: res.data.msg
+              })
+            }
+          }
+        })
+      }
+    } else {
+      // cancel
+      this.setData({
+        editUserInfoModal: false
+      })
+    }
+  },
+
+  // 修改昵称
+  changeUserName: function (e) {
+    let {detail} = e
+    let newNickName = detail.value
+    this.setData({
+      newNickName: newNickName
     })
   },
 

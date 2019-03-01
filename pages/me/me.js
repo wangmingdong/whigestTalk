@@ -469,11 +469,10 @@ Page({
           if (res && res.data) {
             // 修改成功
             if (res.data.suc) {
-              $wuxToast().show({
-                type: 'success',
-                duration: 1500,
-                color: '#fff',
-                text: '修改成功！'
+              wx.showToast({
+                title: '修改成功！',
+                icon: 'success',
+                duration: 1500
               })
               let userInfo = res.data.userInfo
               app.globalData.userInfo = userInfo
@@ -494,11 +493,10 @@ Page({
               self.getCommentList()
             } else {
               // 修改失败
-              $wuxToast().show({
-                type: 'error',
-                duration: 1500,
-                color: '#fff',
-                text: res.data.msg
+              wx.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 1500
               })
             }
           }

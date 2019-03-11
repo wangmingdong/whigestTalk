@@ -166,6 +166,7 @@ Page({
     $wuxActionSheet().showSheet({
       titleText: '操作',
       buttons: [],
+      theme: 'wx',
       buttonClicked(index, item) {
         return true
       },
@@ -368,6 +369,15 @@ Page({
   // 打开或关闭新增评论弹窗
   switchEditPopup: function (e) {
     console.log(e)
+    if (this.data.userInfo.status == 0) {
+      $wuxToast().show({
+        type: 'warning',
+        duration: 1500,
+        color: '#fff',
+        text: '您已被列入黑名单，请联系管理员或掌柜~'
+      })
+      return
+    }
     let status = parseInt(e.target.dataset.popupType)
     let self = this
     self.setData({

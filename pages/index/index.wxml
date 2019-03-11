@@ -2,6 +2,7 @@
 <view class="container">
   <wux-actionsheet id="wux-actionsheet" />
   <wux-toast id="wux-toast" />
+  <wux-dialog id="wux-dialog" />
   <!-- 浮动按钮 -->
   <wux-floating-button wx:if="{{!showEditPopup}}" position="{{ position }}" theme="{{ theme }}" buttons="{{ buttons }}" bind:change="onChange" bind:click="clickFloatBtn" bind:contact="onContact" bind:getuserinfo="onGotUserInfo" />
 

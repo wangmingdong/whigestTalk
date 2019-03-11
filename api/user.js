@@ -76,6 +76,13 @@ export default class UserSev {
     return Net.postJSON(Config.SERVER.url.root + "/users/updateUserName", {}, data);
   }
 
+  /**
+  * 拉黑用户
+  */
+  static deleteUser(data) {
+    return Net.postJSON(Config.SERVER.url.root + "/users/deleteUser", {}, data);
+  }
+
 
   
 

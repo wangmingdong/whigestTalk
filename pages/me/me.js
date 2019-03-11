@@ -53,8 +53,9 @@ Page({
     }],
     identityObj: {
       0: '普通会员',
-      1: '掌柜',
-      2: '金卡会员'
+      1: '管理员',
+      2: '掌柜',
+      3: '金卡会员',
     },
     editUserInfoModal: false,
     editUserInfoModalBtns: [
@@ -85,10 +86,11 @@ Page({
         StorageUtil.setStorageSync("sessionKey", res.session_key);
         StorageUtil.setStorageSync("openid", res.openid);
         self.findUserByOpenId(res, (result) => {
-          if ((!userInfo || !userInfo.id) && result) {
+          if (result) {
             userInfo = result
           }
           app.globalData.userInfo = userInfo
+          StorageUtil.setStorageSync("userInfo", userInfo);
 
           self.data.tabItem[self.data.currentIndex].spinning = false
           self.setData({
@@ -411,6 +413,7 @@ Page({
     $wuxActionSheet().showSheet({
       titleText: '操作',
       buttons: [],
+      theme: 'wx',
       buttonClicked(index, item) {
         return true
       },

@@ -2,11 +2,12 @@
 import User from "./../../api/user";
 import Auth from "./../../api/auth";
 import CommentSev from "./../../api/comment";
+import UserSev from "./../../api/user";
 import StorageUtil from "./../../utils/storageUtil";
 import FormatUtil from "./../../utils/formatUtil.js";
 import NavigationUtil from "./../../utils/navigationUtil.js";
 import Config from "./../../config";
-import { $stopWuxRefresher, $wuxActionSheet, $wuxToast } from '../../lib/wux/index';
+import { $stopWuxRefresher, $wuxActionSheet, $wuxToast, $wuxDialog } from '../../lib/wux/index';
 
 //获取应用实例
 const app = getApp()
@@ -160,11 +161,12 @@ Page({
         //     openid: res.openid
         //   }
         // }
-        self.findUserByOpenId(res, () => {
-          app.globalData.userInfo = userInfo
+        self.findUserByOpenId(res, (result) => {
+          app.globalData.userInfo = result
+          StorageUtil.setStorageSync("userInfo", result);
           self.setData({
-            userInfo: userInfo,
-            hasUserInfo: userInfo,
+            userInfo: result,
+            hasUserInfo: result,
             spinning: false
           })
           console.log(userInfo)
@@ -302,7 +304,17 @@ Page({
     console.log(selectBtnInfo.type)
     switch (selectBtnInfo.type) {
       case 'text':
-        this.switchEditPopup(true)
+        // 如果用户被拉黑，不允许发表状态
+        if (this.data.userInfo.status == 0) {
+          $wuxToast().show({
+            type: 'warning',
+            duration: 1500,
+            color: '#fff',
+            text: '您已被列入黑名单，请联系管理员或掌柜~'
+          })
+        } else {
+          this.switchEditPopup(true)
+        }
         break;
       case 'picture':
         this.switchEditPopup(true)
@@ -421,32 +433,81 @@ Page({
   showCommentOptions: function (e) {
     let commentInfo = e.target.dataset.commentInfo
     let self = this
+    let btns = []
+    if (this.data.userInfo.isAdmin == 1 && !commentInfo.isSelf) {
+      btns.push({
+        text: '拉黑此人'
+      })
+    }
     $wuxActionSheet().showSheet({
       titleText: '操作',
-      buttons: [],
+      theme: 'wx',
+      buttons: btns,
       buttonClicked(index, item) {
+        if (index == 0) {
+          console.log(commentInfo)
+          $wuxDialog().confirm({
+            resetOnClose: true,
+            closable: true,
+            title: '确认操作',
+            content: '确认拉黑此人？ta将无法评论或者发表说说',
+            onConfirm(e) {
+              wx.showLoading({
+                title: '请求中...',
+                mask: true
+              })
+              UserSev.deleteUser({targetId: commentInfo.userInfo.openid}).then(res => {
+                if (res && res.data) {
+                  wx.hideLoading()
+                  $wuxToast().show({
+                    type: 'success',
+                    duration: 1500,
+                    color: '#fff',
+                    text: '拉黑成功！'
+                  })
+                }
+                this.cancel()
+              })
+            },
+            onCancel(e) {
+
+            },
+          })
+        }
         return true
       },
       cancelText: '取消',
       cancel() { },
       destructiveText: '删除',
       destructiveButtonClicked() {
-        wx.showLoading({
-          title: '请求中...',
-          mask: true
-        })
-        CommentSev.deleteComment(commentInfo.id).then(res => {
-          if (res && res.data) {
-            wx.hideLoading()
-            self.updateCommentData('delete', commentInfo)
-            $wuxToast().show({
-              type: 'success',
-              duration: 1500,
-              color: '#fff',
-              text: '删除成功！'
+        this.cancel()
+        $wuxDialog().confirm({
+          resetOnClose: true,
+          closable: true,
+          title: '确认删除',
+          content: '确认删除该条说说？',
+          onConfirm(e) {
+            wx.showLoading({
+              title: '请求中...',
+              mask: true
             })
-          }
-          this.cancel()
+            CommentSev.deleteComment(commentInfo.id).then(res => {
+              if (res && res.data) {
+                wx.hideLoading()
+                self.updateCommentData('delete', commentInfo)
+                $wuxToast().show({
+                  type: 'success',
+                  duration: 1500,
+                  color: '#fff',
+                  text: '删除成功！'
+                })
+              }
+              this.cancel()
+            })
+          },
+          onCancel(e) {
+            
+          },
         })
       },
     })

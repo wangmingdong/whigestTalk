@@ -186,6 +186,10 @@ page{
   flex-direction: column;
   width: 100%;
   padding-left: 30rpx;
+  /* background-image: url(http://static.weqianduan.com/forbidden.png);
+  background-position: 30rpx 0%;
+  background-size: 80rpx;
+  background-repeat: no-repeat; */
 }
 
 .card-nickName {
@@ -210,6 +214,17 @@ page{
   position: relative;
   word-break:break-all;
 }
+
+/* .card-body:after{
+  content: '';
+  position: relative;
+  width: 120rpx;
+  height: 120rpx;
+  background-image: url(http://static.weqianduan.com/forbidden.png);
+  background-position: bottom right;
+  background-size: 120rpx;
+  background-repeat: no-repeat;
+} */
 
 .card-body-text{
   margin: 0 10rpx;

@@ -556,7 +556,9 @@ page{
 }
 
 .card-tabs-content{
-  
+  /* padding:20rpx 0; */
+  /* background-color:#fff; */
+  /* border-top:1px solid #eee; */
 }
 
 .card-tabs-content .card-container:first-of-type{
@@ -567,6 +569,7 @@ page{
   align-items:center;
   justify-content:center;
   font-size:30rpx;
+  padding:10rpx 0;
 }
 
 .open-data-avatar-container{

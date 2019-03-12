@@ -70,7 +70,7 @@ var checkCurrentEnv = function (env) {
 
 //环境检测 必填
 // dev：开发环境 test：测试环境 pro: 生产环境  pre 预发布
-var SERVER = checkCurrentEnv("pre");
+var SERVER = checkCurrentEnv("dev");
 console.log("当前环境:" + JSON.stringify(SERVER));
 
 //配置腾讯地图key

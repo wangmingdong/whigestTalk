@@ -568,11 +568,20 @@ Page({
   // 发布消息
   publishComment: function (e) {
     this.getUserInfo(e, res => {
-      // 如果发布窗口已打开并且有内容，则直接发布
-      if (this.data.showEditPopup) {
-        // 填写内容或者纯图片
-        if (this.data.commentContent || this.data.fileList.length) {
-          this.addNewComment()
+      if (res) {
+        // 如果发布窗口已打开并且有内容，则直接发布
+        if (this.data.showEditPopup) {
+          // 填写内容或者纯图片
+          if (this.data.commentContent || this.data.fileList.length) {
+            this.addNewComment()
+          } else {
+            $wuxToast().show({
+              type: 'forbidden',
+              duration: 1500,
+              color: '#fff',
+              text: '写点东西吧'
+            })
+          }
         } else {
           $wuxToast().show({
             type: 'forbidden',
@@ -581,13 +590,6 @@ Page({
             text: '写点东西吧'
           })
         }
-      } else {
-        $wuxToast().show({
-          type: 'forbidden',
-          duration: 1500,
-          color: '#fff',
-          text: '写点东西吧'
-        })
       }
     })
   },

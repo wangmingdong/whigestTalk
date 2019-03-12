@@ -119,7 +119,7 @@
               <i-load-more custom-class="white-color" tip="{{tabItem[currentIndex].loadMoreText}}" loading="{{ tabItem[currentIndex].spinning }}" />
             </view>
 
-            <view class="footer-load-more" wx:if="{{currentIndex == 0 && tabItem[currentIndex].list.length && !tabItem[currentIndex].spinning}}" bindtap='loadRankMore'>
+            <view class="footer-load-more" wx:if="{{currentIndex == 0 && !tabItem[currentIndex].spinning}}" bindtap='loadRankMore'>
               {{tabItem[currentIndex].isNoMore ? '没有更多了': '点击加载更多'}}
             </view>
           </scroll-view>
@@ -141,7 +141,7 @@
             <i-load-more custom-class="white-color" tip="{{tabItem[currentIndex].loadMoreText}}" loading="{{ tabItem[currentIndex].spinning }}" />
           </view>
 
-          <view class="footer-load-more" wx:if="{{currentIndex == 1 && tabItem[currentIndex].list.length && !tabItem[currentIndex].spinning}}" bindtap='loadRankMore'>
+          <view class="footer-load-more" wx:if="{{currentIndex == 1 && !tabItem[currentIndex].spinning}}" bindtap='loadRankMore'>
             {{tabItem[currentIndex].isNoMore ? '没有更多了': '点击加载更多'}}
           </view>
         </view>

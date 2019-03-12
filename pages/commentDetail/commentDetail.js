@@ -61,7 +61,8 @@ Page({
     if (commentInfo && commentInfo.id == commentId) {
       console.log(commentInfo)
       this.setData({
-        commentInfo: commentInfo
+        commentInfo: commentInfo,
+        discussTotal: commentInfo.discussCount
       })
     }
     console.log(options)
@@ -563,11 +564,20 @@ Page({
   // 发布消息
   publishDiscuss: function (e) {
     this.getUserInfo(e, res => {
-      // 如果发布窗口已打开并且有内容，则直接发布
-      if (this.data.showEditPopup) {
-        // 填写内容或者纯图片
-        if (this.data.discussContent || this.data.fileList.length) {
-          this.addNewDiscuss()
+      if (res) {
+        // 如果发布窗口已打开并且有内容，则直接发布
+        if (this.data.showEditPopup) {
+          // 填写内容或者纯图片
+          if (this.data.discussContent || this.data.fileList.length) {
+            this.addNewDiscuss()
+          } else {
+            $wuxToast().show({
+              type: 'forbidden',
+              duration: 1500,
+              color: '#fff',
+              text: '写点东西吧'
+            })
+          }
         } else {
           $wuxToast().show({
             type: 'forbidden',
@@ -576,13 +586,6 @@ Page({
             text: '写点东西吧'
           })
         }
-      } else {
-        $wuxToast().show({
-          type: 'forbidden',
-          duration: 1500,
-          color: '#fff',
-          text: '写点东西吧'
-        })
       }
     })
   },

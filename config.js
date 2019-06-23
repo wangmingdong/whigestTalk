@@ -24,7 +24,8 @@ var checkCurrentEnv = function (env) {
     case 'pre':
       // env = '148.70.56.11';
       port = '3004';
-      env = 'music.weqianduan.com';
+      // env = 'music.weqianduan.com';
+      env = 'www.whigest.club';
       break;
     default:
       env = 'weqianduan.com';

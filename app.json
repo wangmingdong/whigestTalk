@@ -26,5 +26,6 @@
         "selectedIconPath": "./imgs/people_fill.png"
       }
     ]
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

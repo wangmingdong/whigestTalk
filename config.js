@@ -18,7 +18,7 @@ var checkCurrentEnv = function (env) {
     case 'dev':
       // env = '172.31.121.57';
       // env = '192.168.43.157';
-      env = '172.31.120.126';
+      env = '192.168.31.7';
       // env = '192.168.31.252';
       break;
     case 'pre':
@@ -70,7 +70,7 @@ var checkCurrentEnv = function (env) {
 
 //环境检测 必填
 // dev：开发环境 test：测试环境 pro: 生产环境  pre 预发布
-var SERVER = checkCurrentEnv("dev");
+var SERVER = checkCurrentEnv("pre");
 console.log("当前环境:" + JSON.stringify(SERVER));
 
 //配置腾讯地图key

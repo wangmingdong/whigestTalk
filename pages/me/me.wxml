@@ -29,6 +29,7 @@
         </view>
       </view>
       <view class="card-header" wx:else>
+        <button class="hidden-login-btn" open-type='getUserInfo' bind:getuserinfo="getUserInfo"></button>
         <view class="card-avatar-container lg-avatar-container">
           <view class="card-avatar-img open-data-avatar-container">
             <open-data class="open-data-avatar" type="userAvatarUrl"></open-data>
@@ -45,6 +46,17 @@
         </view>
       </view>
     </view>
+
+    <wux-popup position="top" visible="{{ editAvatarModal }}" bind:close="closeAvatarModal">
+      <wux-cell-group title="上传头像">
+          <wux-upload class="avatar-upload-container" listType="picture-card" count="1" max="1" url="{{uploadUrl}}" bind:change="changeImgUpload" bind:success="imgUploadSuccess" bind:fail="imgUploadFail" bind:complete="imgUploadComplete"  bind:progress="imgUploadProgress" bind:preview="imgUploadPreview" bind:remove="imgUploadRemove">
+              <text>添加图片</text>
+          </wux-upload>
+          <wux-cell hover-class="none">
+              <wux-button block type="balanced" bindtap="closeAvatarModal">关闭</wux-button>
+          </wux-cell>
+      </wux-cell-group>
+  </wux-popup>
 
     <view class="card-container no-border">
       <wux-tabs wux-class="card-tabs-header" controlled current="{{ currentIndex }}" bindchange="onChangeTabItem">

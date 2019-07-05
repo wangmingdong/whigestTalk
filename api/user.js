@@ -77,6 +77,13 @@ export default class UserSev {
   }
 
   /**
+  * 修改用户
+  */
+  static updateUser(data) {
+    return Net.postJSON(Config.SERVER.url.root + "/users/updateUser", {}, data);
+  }
+
+  /**
   * 拉黑用户
   */
   static deleteUser(data) {

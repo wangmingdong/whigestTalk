@@ -66,7 +66,10 @@ Page({
         name: '确定'
       }
     ],
-    newNickName: '' // 修改后昵称
+    newNickName: '', // 修改后昵称
+    editAvatarModal: false, // 修改头像弹窗
+    uploadUrl: `${Config.SERVER.url.root}/common/upload`,
+    avatarUrl: ''
   },
 
   /**
@@ -105,6 +108,32 @@ Page({
       }
     })
 
+  },
+
+  // 登录查询
+  queryLogin: function (fn) {
+    Auth.loginSys().then(res => {
+      if (res) {
+        StorageUtil.setStorageSync("sessionKey", res.session_key);
+        User.findUserByOpenId(res.openid).then(info => {
+          if (info.data) {
+            app.globalData.userInfo = info.data
+            this.setData({
+              userInfo: info.data,
+              hasUserInfo: info.data
+            })
+            StorageUtil.setStorageSync("userInfo", info.data);
+            if (fn) {
+              fn(info.data)
+            }
+          } else {
+            if (fn) {
+              fn(res)
+            }
+          }
+        })
+      }
+    })
   },
 
   getUserInfo: function(e, fn) {
@@ -441,12 +470,146 @@ Page({
       },
     })
   },
+  
+  // 图片上传相关
+  changeImgUpload(e) {
+    console.log('changeImgUpload', e)
+    const { file } = e.detail
+    let self = this;
+    if (file.status === 'uploading') {
+      this.setData({
+        progress: 0,
+      })
+      wx.showLoading({
+        title: '上传中，请稍后',
+        mask: true
+      })
+    } else if (file.status === 'done') {
+      let result = file.res;
+      let urlInfo = null;
+      if (result.statusCode !== 200) {
+        wx.showToast({
+          title: '图片上传失败！',
+          icon: 'none',
+          duration: 1500
+        })
+        return;
+      } 
+      urlInfo = JSON.parse(result.data).data;
+      this.setData({
+        avatarUrl: urlInfo.imgUrl,
+      })
+      // 上传新头像到数据库
+      User.updateUser({ avatarUrl: urlInfo.imgUrl }).then(res => {
+        if (res && res.data) {
+          // 修改成功
+          wx.showToast({
+            title: '修改成功！',
+            icon: 'success',
+            duration: 1500
+          })
+          let userInfo = res.data;
+          app.globalData.userInfo = userInfo
+          self.setData({
+            userInfo: userInfo
+          })
+          StorageUtil.setStorageSync("userInfo", userInfo);
+          self.closeAvatarModal();
+          // 查询评论数据
+          self.onRefresh()
+        } else {
+          // 修改失败
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 1500
+          })
+        }
+      })
+    }
+  },
+  imgUploadSuccess(e) {
+    console.log('imgUploadSuccess', e)
+    let fileDetail = e.detail
+    // this.setData({
+    //   fileList: fileDetail.fileList
+    // })
+  },
+  imgUploadFail(e) {
+    console.log('imgUploadFail', e)
+  },
+  imgUploadComplete(e) {
+    console.log('imgUploadComplete', e)
+    wx.hideLoading()
+  },
+  imgUploadProgress(e) {
+    console.log('imgUploadProgress', e)
+    this.setData({
+      progress: e.detail.file.progress,
+    })
+  },
+  imgUploadPreview(e) {
+    console.log('imgUploadPreview', e)
+    const { file, fileList } = e.detail
+    wx.previewImage({
+      current: file.url,
+      urls: fileList.map((n) => n.url),
+    })
+  },
+  imgUploadRemove(e) {
+    const { file, fileList } = e.detail
+    this.setData({
+      fileList: fileList.filter((n) => n.uid !== file.uid),
+    })
+    console.log(this.data.fileList)
+    // wx.showModal({
+    //   content: '确定删除？',
+    //   success: (res) => {
+    //     if (res.confirm) {
+    //       this.setData({
+    //         fileList: fileList.filter((n) => n.uid !== file.uid),
+    //       })
+    //     }
+    //   },
+    // })
+  },
 
   // 用户信息功能按钮
   showUserOptions: function () {
+    
+    let self = this
+    $wuxActionSheet().showSheet({
+      titleText: '操作',
+      buttons: [{
+        text: '修改昵称'
+      }, {
+        text: '修改头像'
+      }],
+      theme: 'wx',
+      buttonClicked(index, item) {
+        if (index == 0) {
+          self.setData({
+            editUserInfoModal: true,
+            newNickName: self.data.userInfo.nickName
+          })
+        } else if (index == 1) {
+          console.log('修改头像')
+          self.editAvatarModal = true;
+          self.setData({
+            editAvatarModal: true
+          })
+        }
+        return true
+      },
+      cancelText: '取消',
+      cancel() { }
+    })
+  },
+
+  // 关闭修改头像弹窗
+  closeAvatarModal: function () {
     this.setData({
-      editUserInfoModal: true,
-      newNickName: this.data.userInfo.nickName
+      editAvatarModal: false
     })
   },
 

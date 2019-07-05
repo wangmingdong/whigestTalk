@@ -523,6 +523,15 @@ Page({
     })
   },
 
+  // 预览单张图片
+  previewOneImage: function (e) {
+    var current = e.target.dataset.src;
+    wx.previewImage({
+      current: current, // 当前显示图片的http链接  
+      urls: [current] // 需要预览的图片http链接列表  
+    })
+  },
+
   // 点赞请求
   giveGoodAction: function (e) {
     let param = {

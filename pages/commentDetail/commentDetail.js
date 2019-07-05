@@ -144,6 +144,15 @@ Page({
     })
   },
 
+  // 预览单张图片
+  previewOneImage: function (e) {
+    var current = e.target.dataset.src;
+    wx.previewImage({
+      current: current, // 当前显示图片的http链接  
+      urls: [current] // 需要预览的图片http链接列表  
+    })
+  },
+
   // 预览评论图片
   previewDiscussImgs: function (e) {
     let imgUrl = e.currentTarget.dataset.imgInfo

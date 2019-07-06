@@ -8,9 +8,9 @@
         <view class="card-header" wx:if="{{commentInfo.id}}">
           <view class="card-avatar-container">
             <image class="avatar-icon" wx:if="{{!commentInfo.isSecret && (commentInfo.userInfo.isAdmin == 1)}}" src="http://static.weqianduan.com/v-icon.png"></image>
-            <image class="card-avatar-img" data-src="{{commentInfo.userInfo.avatarUrl}}" bindtap="previewOneImage" wx:if="{{commentInfo.userInfo.avatarUrl && !commentInfo.isSecret}}" src="{{commentInfo.userInfo.avatarUrl}}"></image>
-            <image class="card-avatar-img" data-src="{{commentInfo.mockAvatar}}" bindtap="previewOneImage" wx:elif="{{commentInfo.mockAvatar}}" src="{{commentInfo.mockAvatar}}"></image>
-            <image class="card-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
+            <image class="card-avatar-img" mode="aspectFill" data-src="{{commentInfo.userInfo.avatarUrl}}" bindtap="previewOneImage" wx:if="{{commentInfo.userInfo.avatarUrl && !commentInfo.isSecret}}" src="{{commentInfo.userInfo.avatarUrl}}"></image>
+            <image class="card-avatar-img" mode="aspectFill" data-src="{{commentInfo.mockAvatar}}" bindtap="previewOneImage" wx:elif="{{commentInfo.mockAvatar}}" src="{{commentInfo.mockAvatar}}"></image>
+            <image class="card-avatar-img" mode="aspectFill" wx:else src="./../../imgs/default-avatar.png"></image>
           </view>
           <view class="card-header-right">
             <view class="card-nickName" wx:if="{{commentInfo.userInfo.nickName && !commentInfo.isSecret}}">{{commentInfo.userInfo.nickName}}</view>
@@ -112,9 +112,9 @@
                 <view class="discuss-avatar-container">
                   <view class="discuss-avatar-main">
                     <image class="discuss-avatar-icon" wx:if="{{!item.isSecret && item.userInfo.isAdmin == 1}}" src="http://static.weqianduan.com/v-icon.png"></image>
-                    <image class="discuss-avatar-img" data-src="{{item.userInfo.avatarUrl}}" bindtap="previewOneImage" wx:if="{{item.userInfo.avatarUrl && !item.isSecret}}" src="{{item.userInfo.avatarUrl}}"></image>
-                    <image class="discuss-avatar-img" data-src="{{item.mockAvatar}}" bindtap="previewOneImage" wx:elif="{{item.mockAvatar}}" src="{{item.mockAvatar}}"></image>
-                    <image class="discuss-avatar-img" wx:else src="./../../imgs/default-avatar.png"></image>
+                    <image class="discuss-avatar-img" data-src="{{item.userInfo.avatarUrl}}" bindtap="previewOneImage" wx:if="{{item.userInfo.avatarUrl && !item.isSecret}}" mode="aspectFill" src="{{item.userInfo.avatarUrl}}"></image>
+                    <image class="discuss-avatar-img" data-src="{{item.mockAvatar}}" bindtap="previewOneImage" wx:elif="{{item.mockAvatar}}" src="{{item.mockAvatar}}" mode="aspectFill"></image>
+                    <image class="discuss-avatar-img" mode="aspectFill" wx:else src="./../../imgs/default-avatar.png"></image>
                   </view>
                 </view>
                 <view class="discuss-content-container">

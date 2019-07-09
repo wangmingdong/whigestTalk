@@ -254,10 +254,10 @@
         <view wx:else></view>
 
         <!-- 开启/关闭匿名 -->
-        <view class="secret-control">
+        <!-- <view class="secret-control">
           <view class="secret-title">匿名：</view>
           <wux-switch name="balanced" slot="footer" color="balanced" value="{{ isSecret }}" bind:change="switchSecret" />
-        </view>
+        </view> -->
       </view>
     </view>
   </view>
